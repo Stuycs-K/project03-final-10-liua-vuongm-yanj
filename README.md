@@ -2,8 +2,9 @@
 # PROJECT NAME HERE
 
 ### GROUP NAME HERE
-
-Group Members Here
+- Andrew Liu
+- Minh (Carmin) Vuong
+- Jiayu Yan
        
 ### Project Description:
 
