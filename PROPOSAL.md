@@ -9,7 +9,7 @@
 20 Questions - a guessing game where a player thinks of a secret object and the other players have to guess it, in 20 attempts or less. The questions that can be asked must be yes or no questions.
     
 # Intended usage:
-Multiple clients can connect to one main server, which will act as a sort of gamemaster. The server user will have a  secret object. The other clients will then be able to ask the server questions, which will then be answered with a yes or no . The server will keep track of the guesses and the clients.
+Multiple clients can connect to one main server, which will act as a sort of gamemaster. The server user will have a secret object. The other clients will then be able to ask the server questions, which will then be answered with a yes or no . The server will keep track of the guesses and the clients.
   
 # Technical Details:
 ### topics covered in class
@@ -34,8 +34,8 @@ Andrew
 - sending guesses between server and clients
     
 # Intended pacing:
-- 1/5 - 
-- 1/10 - establish communication between server and clients with forking
-- 1/12 - 
-- 1/13 - 
+- 1/5 - establish communication between server and client
+- 1/9 - finish server logic 
+- 1/12 - possibly expand this to multiple clients and players
+- 1/13 - add logic for a leaderboard, whoever guesses the quickest wins!
 - 1/16 - Due
