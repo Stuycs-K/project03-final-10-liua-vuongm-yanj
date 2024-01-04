@@ -21,12 +21,15 @@ Multiple clients can connect to one main server, which will act as a sort of gam
 ### roles / responsibilities
 Carmin
 - storing information in arrays and files
+- keep track of attempts and guesses
 
 Jiayu
 - fork/exec processes
+- allow communicatiion for multiple clients
 
 Andrew
 - pipes/sockets
+- handle communication between server and clients
 
 ### algorithms / data structures
 - structs for the players (attempts, guesses)
