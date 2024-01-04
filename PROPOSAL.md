@@ -20,18 +20,22 @@ Multiple clients can connect to one main server, which will act as a sort of gam
 
 ### roles / responsibilities
 Carmin
-- sdadsd
+- storing information in arrays and files
 
 Jiayu
-- asdaa
+- forl/exec processes
 
 Andrew
-- asd
+- sockets
 
 ### algorithms / data structures
 - structs for the players (attempts, guesses)
-- 
+- arrays for the previous guesses
+- sending guesses between server and clients
     
 # Intended pacing:
-
-A timeline with expected completion dates of parts of the project.
+- 1/5
+- 1/10
+- 1/12
+- 1/13
+- 1/16 - Due
