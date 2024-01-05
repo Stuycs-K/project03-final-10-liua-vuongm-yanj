@@ -5,7 +5,7 @@
 
 void clientLogic(int server_socket){
   char userInput[100];
-  printf("Input: ");
+  printf("Ask a Question: ");
   // fflush(stdin);
   // fflush(stdout);
   fgets(userInput, sizeof(userInput), stdin);
@@ -14,7 +14,7 @@ void clientLogic(int server_socket){
 
 
   read(server_socket, userInput, sizeof(userInput)); //read modified
-  printf("Modifed Input: %s\n", userInput);
+  printf("Answer Received (from server): %s\n", userInput);
   close(server_socket);
 }
 

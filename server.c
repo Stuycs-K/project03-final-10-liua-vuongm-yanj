@@ -1,11 +1,6 @@
 #include "networking.h"
 
-void subserver_logic(int client_socket){
-  char input[BUFFER_SIZE];
-  read(client_socket, input, sizeof(input)); //read from client
-  printf("Message Recieved (from client): %s \n", input);
-
-  //rot13
+void rot13(char *input){
   for(int i = 0;i < strlen(input);i++){
     if(input[i]- 13 < 'a'){
       input[i] +=13;
@@ -14,6 +9,14 @@ void subserver_logic(int client_socket){
       input[i]-=13;
     }
   }
+}
+
+void subserver_logic(int client_socket){
+  char input[BUFFER_SIZE];
+  read(client_socket, input, sizeof(input)); //read from client
+  printf("Question Recieved (from client): %s \n", input);
+  rot13(input);
+
 
 //send(client_socket, input, sizeof(input),0);
 write(client_socket, input, sizeof(input));
