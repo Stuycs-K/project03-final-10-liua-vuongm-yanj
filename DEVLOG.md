@@ -9,7 +9,7 @@ Brainstormed ideas for game and wrote out basic description for timestamp and ro
 Copy and paste over jiayu's lab16 code to establish connection between client and server
 
 ### 2024-01-04 - fix my computer pipes
-I realized that pipes on my computer doesn't work so I was fixing it 
+I realized that pipes on my computer doesn't work so I was fixing it
 
 ### 2024-01-04 - implement questioning and answering
 allow the client and server to communicate through standard in. the client is now able to send questions to the server, and the server can respond with yes or no.
@@ -41,6 +41,10 @@ Brainstormed ideas for game and wrote out basic description for timestamp and ro
 ### 2024-01-05 - finalize proposal
 collectively worked on proposal and finalized game structures and the technical aspects
 
-### 2024-01-07 - started implementations 
+### 2024-01-07 - started implementations
 added additional concepts to our game
-figured out client logic for game scoring + attempted implementation for leaderbaord 
+figured out client logic for game scoring + attempted implementation for leaderbaord
+
+### 2024-01-08 - client application
+decided to add struct for each player to organize score and name of client
+added feature to keep track of score (in progress)

@@ -1,4 +1,5 @@
 #include "networking.h"
+#include "client.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -14,7 +15,13 @@ void clientLogic(int server_socket){
 
 
   read(server_socket, userInput, sizeof(userInput)); //read modified
+  printf("%s\n",userInput);
   printf("Answer Received (from server): %s\n", userInput);
+  if(strcmp("yes",userInput) == 0){
+    score ++;
+  }
+
+  printf("Current Score: %d\n", score);
   close(server_socket);
 }
 
