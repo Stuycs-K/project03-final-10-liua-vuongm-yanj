@@ -14,6 +14,6 @@
 #include <signal.h>
 
 
-
+int semSetup();
 void accessSemaphore(int semid);
 void releaseSemaphore(int semid);
