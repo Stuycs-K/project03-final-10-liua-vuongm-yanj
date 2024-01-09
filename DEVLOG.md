@@ -33,6 +33,11 @@ collectively worked on proposal and finalized game structures and the technical 
 ### 2024-01-07 - detail out out project more and roles
 improve intended pacing and member roles to the proposal, change minor rule in intended usage of the game
 
+### 2024-01-08 - add implementation of a transcript
+record + transcribe player's guesses and answers into a transcript file
+start working on allowing multiple clients to have their separate files using PID
+
+
 ## Jiayu Yan
 
 ### 2024-01-02 - started basic proposal + assigned rules to each member
