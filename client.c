@@ -5,6 +5,7 @@
 
 void clientLogic(int server_socket){
   char userInput[100];
+  char response[100];
   int t_file;
 
   t_file = open("transcript.txt", O_RDWR | O_APPEND | O_CREAT, 0611);
@@ -25,8 +26,15 @@ void clientLogic(int server_socket){
   //send(server_socket,userInput, sizeof(userInput),0);
 
 
-  read(server_socket, userInput, sizeof(userInput)); //read modified
-  printf("Answer Received (from server): %s\n", userInput);
+  read(server_socket, response, sizeof(response)); //read modified
+  printf("Answer Received (from server): %s\n", response);
+
+  char* r = response;
+  write(t_file, "ANSWER: ", strlen("ANSWER: "));
+  write(t_file, r, strlen(r)); // put into file?
+  write(t_file, "\n", strlen("\n")); // formatting
+
+
   close(server_socket);
 }
 
