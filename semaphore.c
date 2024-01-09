@@ -1,10 +1,10 @@
 #include "semaphore.h"
 
-int semSetup(){
+int semSetup(int max){
     int semd;
     semd = semget(KEY, 1, IPC_CREAT| 0644);
     union semun us;
-    us.val = 1;
+    us.val = max;
     int r = semctl(semd, 0, SETVAL, us);
     return semd;
 }
