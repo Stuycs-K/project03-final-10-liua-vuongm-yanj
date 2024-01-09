@@ -20,3 +20,4 @@ clean:
 	@rm -f *~
 	@rm -f server
 	@rm -f client
+	@rm -f *.txt
