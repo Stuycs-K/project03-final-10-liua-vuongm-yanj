@@ -13,17 +13,13 @@ void rot13(char *input){
 
 void subserver_logic(int client_socket){
   char input[BUFFER_SIZE];
-  read(client_socket, input, sizeof(input)); //read from client
+  read(client_socket, input, sizeof(input));
   printf("Question Recieved (from client): %s \n", input);
   
   printf("Answer with yes/no \n");
   fgets(input, sizeof(input), stdin);
-
-
-//send(client_socket, input, sizeof(input),0);
-write(client_socket, input, sizeof(input));
-//close(client_socket);
-printf("Message sent (to client): %s\n", input);
+  write(client_socket, input, sizeof(input));
+  printf("Message sent (to client): %s\n", input);
 }
 
 int main(int argc, char *argv[] ) {
