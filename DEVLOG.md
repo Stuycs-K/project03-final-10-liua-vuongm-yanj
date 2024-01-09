@@ -21,9 +21,15 @@ finalized game structures and the technical aspects
 added different semaphores to timeline
     - control how many questions the server can receive at once
     - control how many clients can connect to the server
+
 ### 2024-01-08 - started semaphores implementations
 add accessSemaphore, releaseSemaphore, semSetup
 filled out the body for each 
+
+### 2024-01-08 - started semaphore integration
+I tried to add semaphores to the client logic, however, semaphores are still blocked even though others clients have freed
+need to fix tomorrow
+also did extensive testing with semaphores in semaphoretesting folder, playing around to see what i can do with semaphores
 
 ## Carmin Vuong
 
