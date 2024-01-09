@@ -3,14 +3,14 @@
 #include <string.h>
 #include <stdio.h>
 
-void clientLogic(int server_socket){
+void clientLogic(int server_socket, int num){
   char userInput[100];
   char response[100];
   int t_file;
 
   t_file = open("transcript.txt", O_RDWR | O_APPEND | O_CREAT, 0611);
   if (t_file == -1) perror("what");
-  printf("open(./transcript.txt) : %d\n", t_file);
+  // printf("open(./transcript.txt) : %d\n", t_file);
 
   printf("Ask a Question: ");
   // fflush(stdin);
@@ -18,7 +18,10 @@ void clientLogic(int server_socket){
   fgets(userInput, sizeof(userInput), stdin);
 
   char* question = userInput;
-  write(t_file, "QUESTION: ", strlen("QUESTION: "));
+  char buff[100];
+  sprintf(buff, "QUESTION %d: ", num);
+  char* p = buff;
+  write(t_file, p, strlen(p));
   write(t_file, question, strlen(question)); // put into file?
   // printf("written: %s\n", question);
   
@@ -44,9 +47,12 @@ int main(int argc, char *argv[] ) {
     IP=argv[1];
   }
   printf("Connected to IP: %s\n", IP);
+
+  int clientNum = 1;
   while(1){
     int server_socket = client_tcp_handshake(IP);
     // printf("client connected.\n");
-    clientLogic(server_socket);
+    clientLogic(server_socket, clientNum);
+    clientNum++;
   }
 }
