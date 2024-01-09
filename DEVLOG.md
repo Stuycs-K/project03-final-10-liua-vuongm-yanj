@@ -21,6 +21,9 @@ finalized game structures and the technical aspects
 added different semaphores to timeline
     - control how many questions the server can receive at once
     - control how many clients can connect to the server
+### 2024-01-08 - started semaphores implementations
+add accessSemaphore, releaseSemaphore, semSetup
+filled out the body for each 
 
 ## Carmin Vuong
 
