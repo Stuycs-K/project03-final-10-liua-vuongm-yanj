@@ -2,15 +2,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <unistd.h>
 
 void clientLogic(int server_socket, int num){
   char userInput[100];
   char response[100];
   int t_file;
 
-  t_file = open("transcript.txt", O_RDWR | O_APPEND | O_CREAT, 0611);
-  if (t_file == -1) perror("what");
-  // printf("open(./transcript.txt) : %d\n", t_file);
+  int pid = getpid();
+  printf("client pid: %d\n", pid); // TESTING 
+
+  char b[BUFFER_SIZE];
+  sprintf(b, "transcript_%d.txt", pid);
+
+  t_file = open(b, O_RDWR | O_APPEND | O_CREAT, 0611);
+  if (t_file == -1) perror("opening file error");
 
   printf("Ask a Question: ");
   // fflush(stdin);
