@@ -1,12 +1,13 @@
 #include "semaphore.h"
 
-// int main(){
-//     int semd;
-//     semd = semget(694, 1, IPC_CREAT | IPC_EXCL | 0644);
-//     union semun us;
-//     us.val = 1;
-//     int r = semctl(semd, 0, SETVAL, us);
-// }
+int semSetup(){
+    int semd;
+    semd = semget(KEY, 1, IPC_CREAT| 0644);
+    union semun us;
+    us.val = 1;
+    int r = semctl(semd, 0, SETVAL, us);
+    return semd;
+}
 
 
 void accessSemaphore(int semid){

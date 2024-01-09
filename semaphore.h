@@ -13,6 +13,14 @@
 #include <dirent.h>
 #include <signal.h>
 
+#define KEY 1923
+
+union semun {
+  int val;                  //used for SETVAL
+  struct semid_ds *buf;     //used for IPC_STAT and IPC_SET
+  unsigned short  *array;   //used for SETALL
+  struct seminfo  *__buf;
+};
 
 int semSetup();
 void accessSemaphore(int semid);
