@@ -31,6 +31,9 @@ I tried to add semaphores to the client logic, however, semaphores are still blo
 need to fix tomorrow
 also did extensive testing with semaphores in semaphoretesting folder, playing around to see what i can do with semaphores
 
+### 2024-01-09 - error debug session today
+I FIGURED OUT HOMER DOESNT WORK FOR CODE, i took entire class period to debug and figure out, will be using marge. no code work today
+
 ## Carmin Vuong
 
 ### 2024-01-02 - started our proposal
