@@ -6,7 +6,7 @@ client: client.o networking.o
 server: server.o networking.o
 	@gcc -o server server.o networking.o
 
-client.o: client.c networking.h
+client.o: client.c client.h networking.h
 	@gcc -c client.c
 
 server.o: server.c networking.h
