@@ -21,9 +21,6 @@ void clientLogic(int server_socket, struct player* current, int num){
   char response[100];
   int t_file;
 
-  int pid = getpid();
-  printf("client pid: %s\n", current->name); // TESTING 
-
   char b[BUFFER_SIZE];
   sprintf(b, "transcript_%s.txt", current->name);
 
@@ -32,36 +29,31 @@ void clientLogic(int server_socket, struct player* current, int num){
 
   int temp =0;
   printf("Ask a Question: ");
-  // fflush(stdin);
-  // fflush(stdout);
   fgets(userInput, sizeof(userInput), stdin);
 
-  char* question = userInput;
   char buff[100];
-  sprintf(buff, "QUESTION %d: ", num);
+  sprintf(buff, "QUESTION %d: ", num); // formats the string and puts it into buff
   char* p = buff;
   write(t_file, p, strlen(p));
-  write(t_file, question, strlen(question)); // put into file?
-  // printf("written: %s\n", question);
+
+  char* question = userInput;
+  write(t_file, question, strlen(question)); // put into file
 
   write(server_socket,userInput,sizeof(userInput));
-  //send(server_socket,userInput, sizeof(userInput),0);
 
 
   read(server_socket, response, sizeof(response)); //read modified
 
   response[strcspn(response, "\r\n")] = 0; //remove empty space
 
-  //printf("%s\n",userInput);
-  printf("Answer Received (from server): %s\n", userInput);
+  printf("Answer Received (from server): %s\n", response);
   if(strcasecmp(response, "yes") == 0){
       current -> score ++;
-    //printf("hello");
   }
 
   char* r = response;
   write(t_file, "ANSWER: ", strlen("ANSWER: "));
-  write(t_file, r, strlen(r)); // put into file?
+  write(t_file, r, strlen(r)); // put into file
   write(t_file, "\n\n", strlen("\n\n")); // formatting
 
   printf("Current Score: %d\n", current-> score);
@@ -78,13 +70,12 @@ int main(int argc, char *argv[] ) {
   int score = 0;
   printf("Enter your name: ");
   fgets(name, sizeof(name), stdin);
-  name[strcspn(name, "\r\n")] = 0;
+  name[strcspn(name, "\r\n")] = 0; // remove end character
   struct player* c = newStruct(name,score);
-  //display(c);
-  int clientNum = 1;
+
+  int clientNum = 1; // for numbering questions in transcript
   while(1){
     int server_socket = client_tcp_handshake(IP);
-    //printf("client connected.\n");
     clientLogic(server_socket, c, clientNum);
     clientNum++;
   }
