@@ -23,5 +23,5 @@ union semun {
 };
 
 int semSetup();
-void accessSemaphore(int semid);
-void releaseSemaphore(int semid);
+void accessSemaphore();
+void releaseSemaphore();

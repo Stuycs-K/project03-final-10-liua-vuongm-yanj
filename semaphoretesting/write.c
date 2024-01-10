@@ -33,7 +33,7 @@ int main(){
     
     // Will attempt to access the resources using the semaphore.
     // accessing and decreasing by one
-    int semid = semget(695, 1 , 0);
+    int semid = semget(696, 1 , 0);
     struct sembuf sb; 
     sb.sem_num = 0;
     sb.sem_flg = SEM_UNDO;

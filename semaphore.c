@@ -10,7 +10,8 @@ int semSetup(int max){
 }
 
 
-void accessSemaphore(int semid){
+void accessSemaphore(){
+    int semid = semget(KEY, 1,0);
     struct sembuf sb; 
     sb.sem_num = 0;
     sb.sem_flg = SEM_UNDO;
@@ -18,8 +19,9 @@ void accessSemaphore(int semid){
     semop(semid, &sb , 1);
 }
 
-void releaseSemaphore(int semid){
+void releaseSemaphore(){
     // setting up semaphore ID and struct
+    int semid = semget(KEY, 1,0);
     struct sembuf sb;
     // release semaphore 
     sb.sem_op = 1;

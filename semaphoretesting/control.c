@@ -45,9 +45,9 @@ int main(int argc, char *argv[]){
     {
         printf("create ran\n");
         // semaphore
-        semd = semget(695, 1, IPC_CREAT | 0644);
+        semd = semget(696, 1, IPC_CREAT | 0644);
         union semun us;
-        us.val = 2;
+        us.val = 1;
         int r = semctl(semd, 0, SETVAL, us);
     }
 

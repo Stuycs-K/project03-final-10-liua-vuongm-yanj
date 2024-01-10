@@ -41,21 +41,27 @@ void clientLogic(int server_socket, struct player* current){
 }
 
 int main(int argc, char *argv[] ) {
-  char* IP = "127.0.0.1";
-  int semd = semSetup(1);
-  if(argc>1){
-    IP=argv[1];
-  }
-  printf("Connected to IP: %s\n", IP);
+  // char* IP = "127.0.0.1";
+  // if(argc>1){
+  //   IP=argv[1];
+  // }
+  // printf("Connected to IP: %s\n", IP);
   char name[35];
-  int score = 0;
+  // int score = 0;
   printf("Enter your name: ");
+
+  printf("Attemptting to access\n");
+  accessSemaphore();
+  printf("Semaphore accessed!\n");
   fgets(name, sizeof(name), stdin);
-  struct player* c = newStruct(name,score);
-  //display(c);
-  while(1){
-    int server_socket = client_tcp_handshake(IP);
-    //printf("client connected.\n");
-    clientLogic(server_socket, c);
-  }
+  releaseSemaphore();
+  printf("released semaphore\n");
+
+  // struct player* c = newStruct(name,score);
+  // //display(c);
+  // while(1){
+  //   int server_socket = client_tcp_handshake(IP);
+  //   //printf("client connected.\n");
+  //   clientLogic(server_socket, c);
+  // }
 }
