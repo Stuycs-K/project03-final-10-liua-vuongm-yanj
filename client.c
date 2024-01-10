@@ -22,10 +22,10 @@ void clientLogic(int server_socket, struct player* current, int num){
   int t_file;
 
   int pid = getpid();
-  printf("client pid: %d\n", pid); // TESTING 
+  printf("client pid: %s\n", current->name); // TESTING 
 
   char b[BUFFER_SIZE];
-  sprintf(b, "transcript_%d.txt", pid);
+  sprintf(b, "transcript_%s.txt", current->name);
 
   t_file = open(b, O_RDWR | O_APPEND | O_CREAT, 0611);
   if (t_file == -1) perror("opening file error");
@@ -48,23 +48,21 @@ void clientLogic(int server_socket, struct player* current, int num){
   //send(server_socket,userInput, sizeof(userInput),0);
 
 
-  read(server_socket, userInput, sizeof(userInput)); //read modified
+  read(server_socket, response, sizeof(response)); //read modified
 
-  userInput[strcspn(userInput, "\r\n")] = 0; //remove empty space
+  response[strcspn(response, "\r\n")] = 0; //remove empty space
 
   //printf("%s\n",userInput);
   printf("Answer Received (from server): %s\n", userInput);
+  if(strcasecmp(response, "yes") == 0){
+      current -> score ++;
+    //printf("hello");
+  }
 
   char* r = response;
   write(t_file, "ANSWER: ", strlen("ANSWER: "));
   write(t_file, r, strlen(r)); // put into file?
-  write(t_file, "\n", strlen("\n")); // formatting
-
-
-  if(strcasecmp(userInput, "yes") == 0){
-      current -> score ++;
-    //printf("hello");
-  }
+  write(t_file, "\n\n", strlen("\n\n")); // formatting
 
   printf("Current Score: %d\n", current-> score);
   close(server_socket);
@@ -80,6 +78,7 @@ int main(int argc, char *argv[] ) {
   int score = 0;
   printf("Enter your name: ");
   fgets(name, sizeof(name), stdin);
+  name[strcspn(name, "\r\n")] = 0;
   struct player* c = newStruct(name,score);
   //display(c);
   int clientNum = 1;
