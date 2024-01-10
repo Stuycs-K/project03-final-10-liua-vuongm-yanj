@@ -34,6 +34,9 @@ also did extensive testing with semaphores in semaphoretesting folder, playing a
 ### 2024-01-09 - error debug session today
 I FIGURED OUT HOMER DOESNT WORK FOR CODE, i took entire class period to debug and figure out, will be using marge. no code work today
 
+### 2024-01-10 - tried implementing semaphores, ran into issues
+semaphore release doesn't work after a write/read statement. semaphore release works after access semaphore, which is excpected behavior, however, putting it after a writre statement messes it up. will ask in class tomorrow. i also had trouble with semaphores not correctly updating to the number of max connections, it is fixed now.
+
 ## Carmin Vuong
 
 ### 2024-01-02 - started our proposal
