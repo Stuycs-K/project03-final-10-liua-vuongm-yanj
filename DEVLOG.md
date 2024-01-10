@@ -37,6 +37,10 @@ improve intended pacing and member roles to the proposal, change minor rule in i
 record + transcribe player's guesses and answers into a transcript file
 start working on allowing multiple clients to have their separate files using PID
 
+### 2024-01-09 - fix bugs due to merging + use names
+fix some bugs due to merging code and differentiate client's transcripts using names instead of PID
+format code a bit better and document a little better
+
 ## Jiayu Yan
 
 ### 2024-01-02 - started basic proposal + assigned rules to each member
