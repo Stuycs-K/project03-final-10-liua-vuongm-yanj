@@ -21,11 +21,21 @@ void clientLogic(int server_socket, struct player* current){
   int temp =0;
   printf("Ask a Question: ");
   fgets(userInput, sizeof(userInput), stdin);
+
+  printf("Attemptting to access\n");
+  accessSemaphore();
+  printf("Semaphore accessed!\n");
   write(server_socket,userInput,sizeof(userInput));
+  releaseSemaphore();
+
   //send(server_socket,userInput, sizeof(userInput),0);
-
-
   read(server_socket, userInput, sizeof(userInput)); //read modified
+
+  printf("released semaphore\n");
+  releaseSemaphore();
+
+
+
 
   userInput[strcspn(userInput, "\r\n")] = 0; //remove empty space
 
@@ -41,27 +51,27 @@ void clientLogic(int server_socket, struct player* current){
 }
 
 int main(int argc, char *argv[] ) {
-  // char* IP = "127.0.0.1";
-  // if(argc>1){
-  //   IP=argv[1];
-  // }
-  // printf("Connected to IP: %s\n", IP);
+  char* IP = "127.0.0.1";
+  if(argc>1){
+    IP=argv[1];
+  }
+  printf("Connected to IP: %s\n", IP);
   char name[35];
-  // int score = 0;
-  printf("Enter your name: ");
+  int score = 0;
+  printf("Enter your name:\n");
 
-  printf("Attemptting to access\n");
-  accessSemaphore();
-  printf("Semaphore accessed!\n");
+  // printf("Attemptting to access\n");
+  // accessSemaphore();
+  // printf("Semaphore accessed!\n");
   fgets(name, sizeof(name), stdin);
-  releaseSemaphore();
-  printf("released semaphore\n");
+  // releaseSemaphore();
+  // printf("released semaphore\n");
 
-  // struct player* c = newStruct(name,score);
-  // //display(c);
-  // while(1){
-  //   int server_socket = client_tcp_handshake(IP);
-  //   //printf("client connected.\n");
-  //   clientLogic(server_socket, c);
-  // }
+  struct player* c = newStruct(name,score);
+  display(c);
+  while(1){
+    int server_socket = client_tcp_handshake(IP);
+    //printf("client connected.\n");
+    clientLogic(server_socket, c);
+  }
 }
