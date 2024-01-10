@@ -1,7 +1,8 @@
 #include "server.h"
 
 void display(struct leaderboard *leaderboard){
-  printf("%d,%d,%d,%d,%d\n" , leaderboard -> name, player -> score);
+  printf("%d,%d,%d,%d,%d\n" , leaderboard -> score1, leaderboard -> score2,
+  leaderboard -> score3, leaderboard -> score4, leaderboard -> score5);
 }
 
 void subserver_logic(int client_socket){
