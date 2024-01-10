@@ -6,7 +6,7 @@ client: client.o networking.o semaphore.o
 server: server.o networking.o semaphore.o
 	@gcc -o server server.o networking.o semaphore.o
 
-client.o: client.c networking.h semaphore.h
+client.o: client.c networking.h semaphore.h client.h 
 	@gcc -c client.c
 
 server.o: server.c networking.h semaphore.h
