@@ -22,23 +22,9 @@ void clientLogic(int server_socket, struct player* current){
   printf("Ask a Question: ");
   fgets(userInput, sizeof(userInput), stdin);
 
-  printf("Attemptting to access\n");
-  accessSemaphore();
-  printf("Semaphore accessed!\n");
-
-
-  //releaseSemaphore(); if i add release semaphore here it works
   write(server_socket,userInput,sizeof(userInput));
 
-  //send(server_socket,userInput, sizeof(userInput),0);
   read(server_socket, userInput, sizeof(userInput)); //read modified
-
-  printf("released semaphore\n");
-  releaseSemaphore();
-  // however, adding release semaphore here no longer works?
-
-
-
 
   userInput[strcspn(userInput, "\r\n")] = 0; //remove empty space
 

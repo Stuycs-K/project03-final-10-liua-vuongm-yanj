@@ -16,7 +16,14 @@ void accessSemaphore(){
     sb.sem_num = 0;
     sb.sem_flg = SEM_UNDO;
     sb.sem_op = -1;
+
+
+    int c = semctl(semid, 0 , GETVAL, 0);
+
+    printf("Value of sem before decrementing:%d \n", c);
     semop(semid, &sb , 1);
+    c = semctl(semid, 0 , GETVAL, 0);
+    printf("Value of sem after decrementing:%d \n", c);
 }
 
 void releaseSemaphore(){
@@ -25,5 +32,10 @@ void releaseSemaphore(){
     struct sembuf sb;
     // release semaphore 
     sb.sem_op = 1;
+    int c = semctl(semid, 0 , GETVAL, 0); 
+    printf("Value of sem before incrementing:%d \n", c);
+
     semop(semid, &sb, 1);
+    c = semctl(semid, 0 , GETVAL, 0);    
+    printf("Value of sem after incrementing:%d \n", c);
 }

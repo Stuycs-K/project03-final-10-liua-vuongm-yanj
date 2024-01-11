@@ -37,6 +37,10 @@ I FIGURED OUT HOMER DOESNT WORK FOR CODE, i took entire class period to debug an
 ### 2024-01-10 - tried implementing semaphores, ran into issues
 semaphore release doesn't work after a write/read statement. semaphore release works after access semaphore, which is excpected behavior, however, putting it after a writre statement messes it up. will ask in class tomorrow. i also had trouble with semaphores not correctly updating to the number of max connections, it is fixed now.
 
+### 2024-01-10 - going insane, debugging semaphore not releasing issue after print statement?????
+
+added print statements to display the value of sem before incrementing and the value of sem after incrementing, print statement causes the semaphore to not incremenet????
+
 ## Carmin Vuong
 
 ### 2024-01-02 - started our proposal
