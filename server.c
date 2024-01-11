@@ -1,4 +1,5 @@
 #include "networking.h"
+#include <signal.h>
 
 void rot13(char *input){
   for(int i = 0;i < strlen(input);i++){
@@ -26,7 +27,17 @@ write(client_socket, input, sizeof(input));
 printf("Message sent (to client): %s\n", input);
 }
 
+static void sighandler(int signo) {
+  if (signo == SIGTSTP) {
+    printf("TEST + exiting\n");
+    exit(0);
+  }
+}
+
+
 int main(int argc, char *argv[] ) {
+  signal(SIGTSTP, sighandler);
+
   char userInput[100];
   printf("Set your word: ");
   fgets(userInput, sizeof(userInput), stdin);

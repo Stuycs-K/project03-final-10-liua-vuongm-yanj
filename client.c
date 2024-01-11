@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <signal.h>
 
 struct player* newStruct(char name[35], int score){
   struct player* player = malloc(sizeof(struct player));
@@ -15,6 +16,7 @@ struct player* newStruct(char name[35], int score){
 void display(struct player *player){
   printf("%s,%d\n" , player -> name, player -> score);
 }
+
 
 void clientLogic(int server_socket, struct player* current, int num){
   char userInput[100];
@@ -61,6 +63,8 @@ void clientLogic(int server_socket, struct player* current, int num){
 }
 
 int main(int argc, char *argv[] ) {
+  // signal(SIGTSTP, sighandler);
+
   char* IP = "127.0.0.1";
   if(argc>1){
     IP=argv[1];
