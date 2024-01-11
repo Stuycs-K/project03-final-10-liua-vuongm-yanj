@@ -87,7 +87,6 @@ int main(){
         if (FD_ISSET(STDIN_FILENO, &read_fds)) {
             stdInLogic();
         }
-
         // if socket
         if (FD_ISSET(listen_socket, &read_fds)) {
             socketLogic(listen_socket); 

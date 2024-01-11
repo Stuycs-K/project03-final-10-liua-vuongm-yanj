@@ -31,19 +31,12 @@ int main(int argc, char *argv[] ) {
 
   int listen_socket = server_setup();
   //int num = 0;
-  int x = 0;
-  while(x == 0){
-    int client_socket = server_tcp_handshake(listen_socket);
-    //num++;
-    pid_t f = fork();
-    if(f == 0){
-      subserver_logic(client_socket);
-      //close(client_socket);
-      exit(0);
-    }
-    else{
-      close(client_socket);
-    }
+
+  int client_socket = server_tcp_handshake(listen_socket);
+  while(1){
+    subserver_logic(client_socket);
   }
+  close(client_socket);
+  
 
 }

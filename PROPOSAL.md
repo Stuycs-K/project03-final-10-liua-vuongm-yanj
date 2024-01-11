@@ -14,7 +14,7 @@ Multiple clients can connect to one main server, which will act as the player th
 # Technical Details:
 ### topics covered in class
 - Communication between server and its clients using sockets / pipes
-- fork/exec processes to handle multiple clients
+- use select to handle multiple clients
 - allocating memory to store information regarding previous guesses
 - use signals to tell clients the game is over
 - use files to create a transcript of the game for each client / leaderboard file for the server

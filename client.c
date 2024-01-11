@@ -45,6 +45,9 @@ int main(int argc, char *argv[] ) {
     IP=argv[1];
   }
   printf("Connected to IP: %s\n", IP);
+
+
+  
   char name[35];
   int score = 0;
   printf("Enter your name:\n");
