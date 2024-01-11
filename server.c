@@ -32,10 +32,17 @@ int main(int argc, char *argv[] ) {
   int listen_socket = server_setup();
 
   int client_socket = server_tcp_handshake(listen_socket);
+  printf("connected to client 1\n");
+  int listen_socket1 = server_setup();
+
+  int client_socket1 = server_tcp_handshake(listen_socket);
+
+  printf("connected to client 2\n");
+
+  
 
   while(1){
     subserver_logic(client_socket);
   }
   close(client_socket);
-  
 }

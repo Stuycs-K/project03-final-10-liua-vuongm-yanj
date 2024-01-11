@@ -46,19 +46,21 @@ int main(int argc, char *argv[] ) {
   }
   printf("Connected to IP: %s\n", IP);
 
-  char name[35];
-  int score = 0;
+  
   printf("Enter your name:\n");
 
 
+  char name[35];
+  int score = 0;
+
+  
   fgets(name, sizeof(name), stdin);
 
   struct player* c = newStruct(name,score);
   display(c);
+
   int server_socket = client_tcp_handshake(IP);
   while(1){
-    
-    //printf("client connected.\n");
     clientLogic(server_socket, c);
   }
 }
