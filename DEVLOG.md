@@ -41,6 +41,8 @@ semaphore release doesn't work after a write/read statement. semaphore release w
 
 added print statements to display the value of sem before incrementing and the value of sem after incrementing, print statement causes the semaphore to not incremenet????
 
+### 2024-01-10
+
 ## Carmin Vuong
 
 ### 2024-01-02 - started our proposal

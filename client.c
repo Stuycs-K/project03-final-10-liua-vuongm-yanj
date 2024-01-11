@@ -49,12 +49,8 @@ int main(int argc, char *argv[] ) {
   int score = 0;
   printf("Enter your name:\n");
 
-  // printf("Attemptting to access\n");
-  // accessSemaphore();
-  // printf("Semaphore accessed!\n");
+
   fgets(name, sizeof(name), stdin);
-  // releaseSemaphore();
-  // printf("released semaphore\n");
 
   struct player* c = newStruct(name,score);
   display(c);
