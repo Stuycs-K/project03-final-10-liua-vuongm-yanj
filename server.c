@@ -30,6 +30,8 @@ printf("Message sent (to client): %s\n", input);
 static void sighandler(int signo) {
   if (signo == SIGTSTP) {
     printf("TEST + exiting\n");
+    // improve communicastion between server and clinet (send over name + PID)
+    // so server knows which client wins
     exit(0);
   }
 }

@@ -41,6 +41,10 @@ start working on allowing multiple clients to have their separate files using PI
 fix some bugs due to merging code and differentiate client's transcripts using names instead of PID
 format code a bit better and document a little better
 
+### 2024-01-10 - fix bugs due to merging + use names
+started to add signals which might be used for a winning mechanism
+add comments outlining next steps
+
 ## Jiayu Yan
 
 ### 2024-01-02 - started basic proposal + assigned rules to each member
