@@ -1,5 +1,5 @@
 #include "networking.h"
-#include "semaphore.h"
+// #include "semaphore.h"
 #include "client.h"
 #include <stdlib.h>
 #include <string.h>
@@ -46,8 +46,6 @@ int main(int argc, char *argv[] ) {
   }
   printf("Connected to IP: %s\n", IP);
 
-
-  
   char name[35];
   int score = 0;
   printf("Enter your name:\n");
@@ -57,8 +55,9 @@ int main(int argc, char *argv[] ) {
 
   struct player* c = newStruct(name,score);
   display(c);
+  int server_socket = client_tcp_handshake(IP);
   while(1){
-    int server_socket = client_tcp_handshake(IP);
+    
     //printf("client connected.\n");
     clientLogic(server_socket, c);
   }

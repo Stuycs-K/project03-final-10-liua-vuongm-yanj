@@ -30,13 +30,12 @@ int main(int argc, char *argv[] ) {
   fgets(userInput, sizeof(userInput), stdin);
 
   int listen_socket = server_setup();
-  //int num = 0;
 
   int client_socket = server_tcp_handshake(listen_socket);
+
   while(1){
     subserver_logic(client_socket);
   }
   close(client_socket);
   
-
 }
