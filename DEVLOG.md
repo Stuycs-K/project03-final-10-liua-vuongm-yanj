@@ -49,6 +49,10 @@ debugged for like 15 minutes and realized semaphores were not ideal for my usage
 
 as a group, we collectively tried to implement the select function into our client and server
 
+### 2024-01-11 - debug why client isn't sending question to server properly
+
+i first tried implementing select with two client sockets, but that didn't work so i reverted back my changes and now my original code doesnt work. was tyribng to debug
+
 ## Carmin Vuong
 
 ### 2024-01-02 - started our proposal
