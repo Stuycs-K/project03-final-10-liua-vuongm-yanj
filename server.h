@@ -3,7 +3,11 @@
 #include <stdio.h>
 #ifndef SERVER_H
 #define SERVER_H
-struct leaderboard* newStruct(int score1, int score2, int score3, int score4, int score5);
+#define MAX_CLIENT 5
+struct player {char name[35]; int score;};
+struct leaderboard {struct player* p1; struct player* p2; struct player* p3; struct player* p4; struct player* p5;};
+int err1();
 void subserver_logic(int client_socket);
-void display(struct leaderboard *leaderboard);
+void displayP(struct player *player);
+void displayL(struct leaderboard *leaderboard);
 #endif
