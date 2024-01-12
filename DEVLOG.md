@@ -41,7 +41,13 @@ semaphore release doesn't work after a write/read statement. semaphore release w
 
 added print statements to display the value of sem before incrementing and the value of sem after incrementing, print statement causes the semaphore to not incremenet????
 
-### 2024-01-10
+### 2024-01-10 - remove semaphores, rethinking implementation
+
+debugged for like 15 minutes and realized semaphores were not ideal for my usage, so I removed semaphores entirely from code
+
+### 2024-01-11 - help jiayu with select code
+
+as a group, we collectively tried to implement the select function into our client and server
 
 ## Carmin Vuong
 
