@@ -23,9 +23,10 @@ void clientLogic(int server_socket, struct player* current){
   fgets(userInput, sizeof(userInput), stdin);
 
   write(server_socket,userInput,sizeof(userInput));
+  printf("Question Written to Server\n");
 
   read(server_socket, userInput, sizeof(userInput)); //read modified
-
+  
   userInput[strcspn(userInput, "\r\n")] = 0; //remove empty space
 
   //printf("%s\n",userInput);
@@ -60,7 +61,9 @@ int main(int argc, char *argv[] ) {
   display(c);
 
   int server_socket = client_tcp_handshake(IP);
+  
   while(1){
+    
     clientLogic(server_socket, c);
   }
 }
