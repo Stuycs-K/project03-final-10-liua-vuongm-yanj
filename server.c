@@ -59,20 +59,26 @@ printf("Message sent (to client): %s\n", input);
 
 int main(int argc, char *argv[] ) {
   
-  char mode[100];
-  char str[] = "1"; 
+  char modeStdIn[100];
+  int modeBoolean20Game = 0;
   printf("Enter 1 for 20 Questions (one player) or 2 for 2 minutes (multi player)\n");
-  fgets(mode, sizeof(mode), stdin);
-  int result = strcmp(mode,str);
+  fgets(modeStdIn, sizeof(modeStdIn), stdin);
+  int result = strcmp(modeStdIn,"1");
 
   if(result == 10){
+    modeBoolean20Game = 1;
+  }
+  else{
+    modeBoolean20Game = 0;
+  }
+
+  if(modeBoolean20Game){
     printf("20 Questions Mode!\n");
   }
   else{
     printf("2 Minutes Mode!\n");
   }
 
-  printf("Received: %d\n", result);
 
   char userInput[100];
   printf("Set your word: ");
