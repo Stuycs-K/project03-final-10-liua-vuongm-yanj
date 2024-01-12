@@ -42,15 +42,11 @@ int main(int argc, char *argv[] ) {
 
   fd_set read_fds;
   int listen_socket, client_socket, current;
-  FD_ZERO(&read_fds);
 
   //assume this functuion correcly sets up a listening socket
   listen_socket = server_setup();
 
-  //add listen_socket and stdin to the set
-  FD_SET(listen_socket, &read_fds);
-  //add stdin's file desciptor
-  FD_SET(STDIN_FILENO, &read_fds);
+
 
   char userInput[100];
   printf("Set your word: ");
@@ -58,6 +54,11 @@ int main(int argc, char *argv[] ) {
 
   char input[BUFFER_SIZE];
   while(1){
+    FD_ZERO(&read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    FD_SET(listen_socket, &read_fds);
+
+
     current = listen_socket; // file descriptor of current client
      for (int i = 0; i < MAX_CLIENT; i++) {
        if (sockets[i] != 0){
@@ -70,6 +71,7 @@ int main(int argc, char *argv[] ) {
        //makes sure that it is the biggest open because the you have to select from the biggest one
      }
 
+    printf("waiting until client found\n");
     select(current + 1, &read_fds, NULL, NULL, NULL);
 
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
@@ -77,7 +79,7 @@ int main(int argc, char *argv[] ) {
       fgets(input, sizeof(input), stdin);
       for (int i = 0; i < MAX_CLIENT; i++) {
         if (sockets[i] != 0) {
-          write(sockets[i], input, sizeof(input));
+          if(write(sockets[i], input, sizeof(input))) err1();
           printf("Message sent (to client %d): %s\n", i, input);
         }
       }
@@ -108,11 +110,8 @@ int main(int argc, char *argv[] ) {
       }
     }
 
-    FD_ZERO(&read_fds);
-    FD_SET(STDIN_FILENO, &read_fds);
-    FD_SET(listen_socket, &read_fds);
 
-   close(client_socket);
+   //close(client_socket);
   }
   return 0;
 }

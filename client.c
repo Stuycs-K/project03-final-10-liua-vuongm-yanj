@@ -5,6 +5,11 @@
 #include <stdio.h>
 #include <time.h>
 
+int err1(){
+    printf("errno %d\n",errno);
+    printf("%s\n",strerror(errno));
+    exit(1);
+}
 struct player* newStruct(char name[35], int score){
   struct player* player = malloc(sizeof(struct player));
   strcpy(player->name,name);
@@ -59,33 +64,40 @@ int main(int argc, char *argv[] ) {
   fd_set read_fds;
   char input[BUFFER_SIZE];
 
+  int server_socket = client_tcp_handshake(IP);
+
   while(1){
-    int server_socket = client_tcp_handshake(IP);
     FD_ZERO(&read_fds);
     FD_SET(STDIN_FILENO, &read_fds);
     FD_SET(server_socket, &read_fds);
 
+  printf("Ask a Question: \n");
     select(server_socket + 1, &read_fds, NULL, NULL, NULL);
-
-    // printf("Ask a Question: ");
 
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       fgets(input, sizeof(input), stdin);
-      input[strlen(input)-1]=0; //clear newline
-      if(input[strlen(input)-1]==13){
-          //clear windows line ending
-          input[strlen(input)-1]=0;
-      }
-      write(server_socket,input,sizeof(input));
+      input[strcspn(input, "\r\n")] = 0;
+      printf("got user question\n");
+      int stuff = write(server_socket,input,sizeof(input));
+      err(stuff, "try to write to server");
+      printf("sent to server");
       printf("Current Score: %d\n", c-> score);
     }
 
+
     if (FD_ISSET(server_socket, &read_fds)) {
-      read(server_socket, input, sizeof(input));
-      printf("Answer Received (from server): %s\n", input);
-      if(strcasecmp(input, "yes") == 0){
-          c -> score ++;
-        printf("score updated\n");
+      printf("getting response from server\n");
+      int bytes = read(server_socket, input, sizeof(input));
+      if(bytes<0) err(bytes,"reading from server");
+      if(bytes == 0){
+        printf("0 bytes read\n");
+      }
+      if(bytes > 0){
+        printf("Answer Received (from server): %s\n", input);
+        if(strcasecmp(input, "yes") == 0){
+            c -> score ++;
+          printf("score updated\n");
+      }
       }
    }
 
