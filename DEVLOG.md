@@ -22,6 +22,10 @@ added different semaphores to timeline
     - control how many questions the server can receive at once
     - control how many clients can connect to the server
 
+### 2024-01-12 started working on 20 questions game mode
+
+added booleans to let user choose between two game modes, 20 questions and 2 minutes
+
 ## Carmin Vuong
 
 ### 2024-01-02 - started our proposal
