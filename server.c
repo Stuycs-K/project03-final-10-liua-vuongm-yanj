@@ -1,5 +1,13 @@
 #include "networking.h"
-#include <signal.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <time.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 void rot13(char *input){
   for(int i = 0;i < strlen(input);i++){
@@ -46,19 +54,20 @@ int main(int argc, char *argv[] ) {
 
   int listen_socket = server_setup();
   //int num = 0;
-  int x = 0;
-  while(x == 0){
-    int client_socket = server_tcp_handshake(listen_socket);
-    //num++;
-    pid_t f = fork();
-    if(f == 0){
+  fd_set read_fds;
+
+  while(1){
+    FD_ZERO(&read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    FD_SET(listen_socket,&read_fds);
+
+    select(listen_socket+1, &read_fds, NULL, NULL, NULL);
+
+    if (FD_ISSET(listen_socket, &read_fds)) {
+      int client_socket = server_tcp_handshake(listen_socket);
       subserver_logic(client_socket);
-      //close(client_socket);
-      exit(0);
-    }
-    else{
+
       close(client_socket);
     }
   }
-
 }
