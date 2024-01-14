@@ -64,6 +64,8 @@ void clientLogic(int server_socket, struct player* current, int num){
 void questionsLogic(int server_socket){
   char buff[BUFFER_SIZE];
   while(1){
+    printf("Enter text:\n");
+    fgets(buff,sizeof(buff),stdin);
     write(server_socket, buff, sizeof(buff));
     sleep(1);
   }

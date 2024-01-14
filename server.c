@@ -1,46 +1,5 @@
 #include "networking.h"
 
-int strCompare(char *s1, char *s2){
-    int s1Size = strlen(s1);
-    int s2Size = strlen(s2);
-    int smallerSize = 0;
-
-    if(s1Size>s2Size){
-        smallerSize = s2Size;
-    }
-    else{
-        smallerSize = s1Size;
-    }
-
-    for (int i =0; i < smallerSize; i++){
-        if(s1[i] > s2[i]){
-            return 1;
-        }
-        else if (s2[i] > s1[i]){
-            return -1;
-        }
-
-    }
-    if(s1Size == s2Size){
-            return 0;
-        }
-        if(s1Size > s2Size){
-            return 1;
-        }
-        return -1;
-
-}
-
-void rot13(char *input){
-  for(int i = 0;i < strlen(input);i++){
-    if(input[i]- 13 < 'a'){
-      input[i] +=13;
-    }
-    else{
-      input[i]-=13;
-    }
-  }
-}
 
 void subserver_logic(int client_socket){
   char input[BUFFER_SIZE];
@@ -82,6 +41,12 @@ int main(int argc, char *argv[] ) {
     printf("2 Minutes Mode!\n");
   }
 
+
+  // setting the word
+  char userInput[100];
+  printf("Set your word: ");
+  fgets(userInput, sizeof(userInput), stdin);
+
   // communicate game mode to client
 
   printf("Waiting for client to connect...\n");  
@@ -90,10 +55,6 @@ int main(int argc, char *argv[] ) {
   printf("Client connected!\n\n");
   write(client_socket, &modeBoolean20Game, sizeof(modeBoolean20Game));
   
-
-  char userInput[100];
-  printf("Set your word: ");
-  fgets(userInput, sizeof(userInput), stdin);
 
 
   if(modeBoolean20Game){
