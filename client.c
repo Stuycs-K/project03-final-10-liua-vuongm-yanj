@@ -74,9 +74,27 @@ int main(int argc, char *argv[] ) {
   struct player* c = newStruct(name,score);
 
   int clientNum = 1; // for numbering questions in transcript
-  while(1){
-    int server_socket = client_tcp_handshake(IP);
-    clientLogic(server_socket, c, clientNum);
-    clientNum++;
+  int server_socket = client_tcp_handshake(IP);
+
+  int buffer[BUFFER_SIZE];
+  read(server_socket, buffer,sizeof(buffer)); // reading mode
+  printf("mode: %d\n", *buffer);
+
+  int modeBoolean20Game = 0; // default to 2 minutes
+  if(*buffer == 1){
+    modeBoolean20Game = 1; // set to 20 questions
   }
+
+  if(modeBoolean20Game){
+    printf("20 Questions Mode!\n");
+  }
+  else{
+    printf("2 Minutes Mode!\n");
+  }
+
+  // while(1){
+  //   int server_socket = client_tcp_handshake(IP);
+  //   clientLogic(server_socket, c, clientNum);
+  //   clientNum++;
+  // }
 }

@@ -58,18 +58,18 @@ printf("Message sent (to client): %s\n", input);
 }
 
 int main(int argc, char *argv[] ) {
+
+  int listen_socket = server_setup();
+  int client_socket = server_tcp_handshake(listen_socket);
   
   char modeStdIn[100];
-  int modeBoolean20Game = 0;
+  int modeBoolean20Game = 0; // default is 2 minutes
   printf("Enter 1 for 20 Questions (one player) or 2 for 2 minutes (multi player)\n");
   fgets(modeStdIn, sizeof(modeStdIn), stdin);
   int result = strcmp(modeStdIn,"1");
 
   if(result == 10){
     modeBoolean20Game = 1;
-  }
-  else{
-    modeBoolean20Game = 0;
   }
 
   if(modeBoolean20Game){
@@ -84,21 +84,22 @@ int main(int argc, char *argv[] ) {
   printf("Set your word: ");
   fgets(userInput, sizeof(userInput), stdin);
 
-  int listen_socket = server_setup();
+  
+  write(client_socket, &modeBoolean20Game, sizeof(modeBoolean20Game));
   //int num = 0;
   int x = 0;
-  while(x == 0){
-    int client_socket = server_tcp_handshake(listen_socket);
-    //num++;
-    pid_t f = fork();
-    if(f == 0){
-      subserver_logic(client_socket);
-      //close(client_socket);
-      exit(0);
-    }
-    else{
-      close(client_socket);
-    }
-  }
+  // while(x == 0){
+  //   int client_socket = server_tcp_handshake(listen_socket);
+  //   //num++;
+  //   pid_t f = fork();
+  //   if(f == 0){
+  //     subserver_logic(client_socket);
+  //     //close(client_socket);
+  //     exit(0);
+  //   }
+  //   else{
+  //     close(client_socket);
+  //   }
+  // }
 
 }
