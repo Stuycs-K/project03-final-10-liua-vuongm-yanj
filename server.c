@@ -19,12 +19,12 @@ void subserver_logic(int client_socket){
 void questionsLogic(int client_socket){
   char buff[BUFFER_SIZE];
   while(1){
-    printf("client typing....")
+    printf("client typing....\n");
     int bytes_read = read(client_socket, buff, sizeof(buff));
     // detect if client is still writing stuff
     if(bytes_read){
       printf("Question from player: %s\n",buff);
-      printf("Answer yes/no\n");
+      printf("Answer yes/no/ans\n");
       fgets(buff, sizeof(buff),stdin);
       write(client_socket, buff,sizeof(buff));
     }
@@ -43,8 +43,8 @@ int main(int argc, char *argv[] ) {
   int modeBoolean20Game = 0; // default is 2 minutes, boolean is false
   printf("Enter 1 for 20 Questions (one player) or 2 for 2 minutes (multi player)\n");
   fgets(modeStdIn, sizeof(modeStdIn), stdin);
-  int result = strcmp(modeStdIn,"1");
-  if(result == 10){
+  int result = strcmp(modeStdIn,"1"); // not sure why it returns 10 if equal
+  if(result == 10){ // if user input is 1
     modeBoolean20Game = 1; // boolean set to true
     printf("20 Questions Mode!\n");
   }
@@ -65,8 +65,6 @@ int main(int argc, char *argv[] ) {
   int client_socket = server_tcp_handshake(listen_socket);
   printf("Client connected!\n\n");
   write(client_socket, &modeBoolean20Game, sizeof(modeBoolean20Game));
-  
-
 
   if(modeBoolean20Game){
     // code for 20 questions

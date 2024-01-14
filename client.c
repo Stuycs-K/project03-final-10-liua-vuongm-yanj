@@ -64,6 +64,7 @@ void clientLogic(int server_socket, struct player* current, int num){
 void questionsLogic(int server_socket){
   char buff[BUFFER_SIZE];
   int questions = 20;
+  int winBoolean = 0;
   while(1){
     printf("%d Questions left. Ask your next question:\n", questions);
     fgets(buff,sizeof(buff),stdin);
@@ -72,13 +73,23 @@ void questionsLogic(int server_socket){
 
     printf("server typing...\n");
     read(server_socket, buff, sizeof(buff)); // reading answer
+    
+    int result = strcmp(buff,"ans"); // checking if received win
+    if(result == 10){ // server said we guessed the answer!
+      winBoolean = 1;
+      break;
+    }
     printf("answer received: %s\n", buff);
     if(questions == 0){
       break;
     }
   }
-  // logic once maximum questions asked
-  printf("You've reached the maximum questions!\n");
+  if(winBoolean){ // break becasue of win
+    printf("answer guessed!\n");
+  }
+  else{ // break because no more questions
+    printf("You've reached the maximum questions!\n");
+  }
 }
 
 
