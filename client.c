@@ -85,7 +85,7 @@ void questionsLogic(int server_socket){
     }
   }
   if(winBoolean){ // break becasue of win
-    printf("answer guessed!\n");
+    printf("you guessed the mystery word!\n");
   }
   else{ // break because no more questions
     printf("You've reached the maximum questions!\n");

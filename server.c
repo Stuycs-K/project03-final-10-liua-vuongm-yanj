@@ -18,6 +18,7 @@ void subserver_logic(int client_socket){
 
 void questionsLogic(int client_socket){
   char buff[BUFFER_SIZE];
+  int winBoolean = 0;
   while(1){
     printf("client typing....\n");
     int bytes_read = read(client_socket, buff, sizeof(buff));
@@ -27,12 +28,22 @@ void questionsLogic(int client_socket){
       printf("Answer yes/no/ans\n");
       fgets(buff, sizeof(buff),stdin);
       write(client_socket, buff,sizeof(buff));
+      int result = strcmp(buff,"ans");
+      if(result == 10){
+        winBoolean = 1;
+        break;
+      }
     }
     else{ // game is over!
       break;
     }
   }
-  printf("client lost!\n");
+  if(winBoolean){
+    printf("client guessed word!\n");
+  }
+  else{
+    printf("client lost!\n");
+  }
 }
 
 
