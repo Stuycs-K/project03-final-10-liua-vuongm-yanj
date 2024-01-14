@@ -67,8 +67,12 @@ void questionsLogic(int server_socket){
   while(1){
     printf("%d Questions left. Ask your next question:\n", questions);
     fgets(buff,sizeof(buff),stdin);
-    write(server_socket, buff, sizeof(buff));
+    write(server_socket, buff, sizeof(buff)); // writing question
     questions --;
+
+    printf("server typing...\n");
+    read(server_socket, buff, sizeof(buff)); // reading answer
+    printf("answer received: %s\n", buff);
     if(questions == 0){
       break;
     }
@@ -109,7 +113,7 @@ int main(int argc, char *argv[] ) {
 
 
   if(modeBoolean20Game){
-    printf("20 Questions Mode!\n");
+    printf("20 Questions Mode!\nGame Started!\n\n");
     questionsLogic(server_socket);
 
   }

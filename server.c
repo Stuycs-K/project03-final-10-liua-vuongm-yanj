@@ -19,11 +19,20 @@ void subserver_logic(int client_socket){
 void questionsLogic(int client_socket){
   char buff[BUFFER_SIZE];
   while(1){
+    printf("client typing....")
     int bytes_read = read(client_socket, buff, sizeof(buff));
+    // detect if client is still writing stuff
     if(bytes_read){
-      printf("read: %s\n",buff);
+      printf("Question from player: %s\n",buff);
+      printf("Answer yes/no\n");
+      fgets(buff, sizeof(buff),stdin);
+      write(client_socket, buff,sizeof(buff));
+    }
+    else{ // game is over!
+      break;
     }
   }
+  printf("client lost!\n");
 }
 
 
