@@ -63,12 +63,18 @@ void clientLogic(int server_socket, struct player* current, int num){
 
 void questionsLogic(int server_socket){
   char buff[BUFFER_SIZE];
+  int questions = 20;
   while(1){
-    printf("Enter text:\n");
+    printf("%d Questions left. Ask your next question:\n", questions);
     fgets(buff,sizeof(buff),stdin);
     write(server_socket, buff, sizeof(buff));
-    sleep(1);
+    questions --;
+    if(questions == 0){
+      break;
+    }
   }
+  // logic once maximum questions asked
+  printf("You've reached the maximum questions!\n");
 }
 
 

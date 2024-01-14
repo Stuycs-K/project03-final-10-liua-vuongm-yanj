@@ -10,17 +10,19 @@ void subserver_logic(int client_socket){
   fgets(input, sizeof(input), stdin);
 
 
-//send(client_socket, input, sizeof(input),0);
-write(client_socket, input, sizeof(input));
-//close(client_socket);
-printf("Message sent (to client): %s\n", input);
+  //send(client_socket, input, sizeof(input),0);
+  write(client_socket, input, sizeof(input));
+  //close(client_socket);
+  printf("Message sent (to client): %s\n", input);
 }
 
 void questionsLogic(int client_socket){
   char buff[BUFFER_SIZE];
   while(1){
-    read(client_socket, buff, sizeof(buff));
-    printf("read: %s\n",buff);
+    int bytes_read = read(client_socket, buff, sizeof(buff));
+    if(bytes_read){
+      printf("read: %s\n",buff);
+    }
   }
 }
 
