@@ -58,12 +58,13 @@ printf("Message sent (to client): %s\n", input);
 }
 
 void questionsLogic(int client_socket){
-
+  char buff[BUFFER_SIZE];
+  while(1){
+    read(client_socket, buff, sizeof(buff));
+    printf("read: %s\n",buff);
+  }
 }
 
-void minutesLogic(int client_socket){
-
-}
 
 int main(int argc, char *argv[] ) {
 
@@ -117,12 +118,4 @@ int main(int argc, char *argv[] ) {
     }
     }
   }
-
-
-
-  
-
-  //int num = 0;
-  
-
 }

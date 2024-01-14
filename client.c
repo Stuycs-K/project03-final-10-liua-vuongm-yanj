@@ -60,6 +60,17 @@ void clientLogic(int server_socket, struct player* current, int num){
   close(server_socket);
 }
 
+
+void questionsLogic(int server_socket){
+  char buff[BUFFER_SIZE];
+  while(1){
+    write(server_socket, buff, sizeof(buff));
+    sleep(1);
+  }
+}
+
+
+
 int main(int argc, char *argv[] ) {
   char* IP = "127.0.0.1";
   if(argc>1){
@@ -87,8 +98,12 @@ int main(int argc, char *argv[] ) {
     modeBoolean20Game = 1; // set to 20 questions
   }
 
+
+
   if(modeBoolean20Game){
     printf("20 Questions Mode!\n");
+    questionsLogic(server_socket);
+
   }
   else{
     printf("2 Minutes Mode!\n");
@@ -98,8 +113,5 @@ int main(int argc, char *argv[] ) {
     clientNum++;
     }
   }
-
-
-  
   
 }
