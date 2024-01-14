@@ -24,7 +24,7 @@ void clientLogic(int server_socket, struct player* current, int num){
   char b[BUFFER_SIZE];
   sprintf(b, "transcript_%s.txt", current->name);
 
-  t_file = open(b, O_RDWR | O_APPEND | O_CREAT, 0611);
+  t_file = open(b, O_RDWR | O_APPEND | O_CREAT, 0644);
   if (t_file == -1) perror("opening file error");
 
   int temp =0;
@@ -61,19 +61,44 @@ void clientLogic(int server_socket, struct player* current, int num){
 }
 
 
-void questionsLogic(int server_socket){
+void questionsLogic(int server_socket, struct player* current){
   char buff[BUFFER_SIZE];
   int questions = 20;
   int winBoolean = 0;
+  int t_file;
+  sprintf(buff, "transcript_%s.txt", current->name);
+  remove(buff); // remove file if already exists
+  t_file = open(buff, O_RDWR | O_APPEND | O_CREAT, 0611);
+  if (t_file == -1) perror("opening file error");
+
   while(1){
     printf("%d Questions left. Ask your next question:\n", questions);
+
+    // write QUESTION 1,2, ... to transcription file
+    sprintf(buff, "QUESTION %d: ", 20 - questions); // formats the string and puts it into buff
+    char* p = buff;
+    write(t_file, p, strlen(p));
+
+    // writing stdin to server
     fgets(buff,sizeof(buff),stdin);
-    write(server_socket, buff, sizeof(buff)); // writing question
+    write(server_socket, buff, sizeof(buff)); // writing question to 
     questions --;
 
+    // writing the stdin question to transcription file
+    char* question = buff;
+    write(t_file, question, strlen(question));
+
+    // read answer from server
     printf("server typing...\n");
-    read(server_socket, buff, sizeof(buff)); // reading answer
+    read(server_socket, buff, sizeof(buff));
+
+    // write answer into transcription file
+    char *r = buff;
+    write(t_file, "ANSWER: ", strlen("ANSWER: "));
+    write(t_file, r, strlen(r)); // put into file
+    write(t_file, "\n\n", strlen("\n\n")); // formatting
     
+    // checking if won
     int result = strcmp(buff,"ans"); // checking if received win
     if(result == 10){ // server said we guessed the answer!
       winBoolean = 1;
@@ -84,10 +109,13 @@ void questionsLogic(int server_socket){
       break;
     }
   }
-  if(winBoolean){ // break becasue of win
+
+   // break becasue of win
+  if(winBoolean){
     printf("you guessed the mystery word!\n");
   }
-  else{ // break because no more questions
+   // break because no more questions
+  else{
     printf("You've reached the maximum questions!\n");
   }
 }
@@ -125,7 +153,7 @@ int main(int argc, char *argv[] ) {
 
   if(modeBoolean20Game){
     printf("20 Questions Mode!\nGame Started!\n\n");
-    questionsLogic(server_socket);
+    questionsLogic(server_socket,c);
 
   }
   else{
