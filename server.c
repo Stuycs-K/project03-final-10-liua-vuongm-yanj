@@ -110,7 +110,7 @@ int main(int argc, char *argv[] ) {
           fgets(input, sizeof(input), stdin);
           input[strcspn(input, "\r\n")] = 0;
           write(client_socket, input, sizeof(input));
-          sendRun(client_socket,input);
+          // sendRun(client_socket,input);
         }
         else if(bytes == 0){
           close(sockets[i]);
