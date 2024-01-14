@@ -65,7 +65,10 @@ int main(int argc, char *argv[] ) {
   if(argc>1){
     IP=argv[1];
   }
-  printf("Connected to IP: %s\n", IP);
+  int server_socket = client_tcp_handshake(IP);
+  printf("Connected Server at IP: %s\n\n", IP);
+
+  // setup name and score
   char name[35];
   int score = 0;
   printf("Enter your name: ");
@@ -74,12 +77,11 @@ int main(int argc, char *argv[] ) {
   struct player* c = newStruct(name,score);
 
   int clientNum = 1; // for numbering questions in transcript
-  int server_socket = client_tcp_handshake(IP);
 
+
+  // receiving the game mode from server
   int buffer[BUFFER_SIZE];
   read(server_socket, buffer,sizeof(buffer)); // reading mode
-  printf("mode: %d\n", *buffer);
-
   int modeBoolean20Game = 0; // default to 2 minutes
   if(*buffer == 1){
     modeBoolean20Game = 1; // set to 20 questions
@@ -90,11 +92,14 @@ int main(int argc, char *argv[] ) {
   }
   else{
     printf("2 Minutes Mode!\n");
+    while(1){
+    int server_socket = client_tcp_handshake(IP);
+    clientLogic(server_socket, c, clientNum);
+    clientNum++;
+    }
   }
 
-  // while(1){
-  //   int server_socket = client_tcp_handshake(IP);
-  //   clientLogic(server_socket, c, clientNum);
-  //   clientNum++;
-  // }
+
+  
+  
 }
