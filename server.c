@@ -34,8 +34,8 @@ void questionsLogic(int client_socket){
         break;
       }
     }
-    else{ // game is over!
-      break;
+    else{ // if no bytes are read
+      break; 
     }
   }
   if(winBoolean){
