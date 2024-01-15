@@ -57,6 +57,12 @@ i first tried implementing select with two client sockets, but that didn't work 
 
 added booleans to let user choose between two game modes, 20 questions and 2 minutes
 
+### 2024-01-14 implemented 20 questions
+- add selection phase for 20 question or 2 minutes
+- add detection for if client disconnected
+- add detection for if client won the game
+- add file transcription for the client questions and answers received
+
 ## Carmin Vuong
 
 ### 2024-01-02 - started our proposal
