@@ -6,11 +6,21 @@
 - Minh (Carmin) Vuong
 - Jiayu Yan
        
-### Project Description:
+# Project Description:
 
-Explain what is this project.
+Our project is a mystery word guesser game. We have two modes. 
+
+## "20 questions" - Single Player Mode 
+One single player mode which we call "20 questions." There is one server who is called "answerer" who thinks of an object for the "questioner," the client, to guess. The questioner can ask up to 20 yes-or-no questions to determine what object the answer is thinking about. If the questioner is able to guess the mystery object in 20 questions or less, they win. Otherwise, the answerer wins.
+
+## "2 minutes" - Multi Player Mode
   
-### Instructions:
+# Instructions:
+
+## "20 questions"
+
+
+## "2 minutes"
 
 How does the user install/compile/run the program.
 How does the user interact with this program?
