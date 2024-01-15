@@ -22,27 +22,12 @@ void display(struct player *player){
   printf("%s, %d\n" , player -> name, player -> score);
 }
 
-int main(int argc, char *argv[] ) {
-  char* IP = "127.0.0.1";
-  if(argc>1){
-    IP=argv[1];
-  }
-  int run = 0; //0 run 1 not run
-  // time_t start = time(NULL);
-  //printf("Connected to IP: %s\n", IP);
-
-  char name[35];
-  int score = 0;
-  printf("Enter your name: ");
-  fgets(name, sizeof(name), stdin);
-  name[strlen(name)-1] = 0;
-  struct player* c = newStruct(name,score);
-
+void clientLogicMultiple(struct player* c, char* ip){
   //display(c);
   fd_set read_fds;
   char input[BUFFER_SIZE];
 
-  int server_socket = client_tcp_handshake(IP);
+  int server_socket = client_tcp_handshake(ip);
   int loop = 0;
 
   printf("Ask a Question: \n");
@@ -95,5 +80,21 @@ int main(int argc, char *argv[] ) {
    }
 
   }
+}
+
+int main(int argc, char *argv[] ) {
+  char* IP = "127.0.0.1";
+  if(argc>1){
+    IP=argv[1];
+  }
+
+  char name[35];
+  int score = 0;
+  printf("Enter your name: ");
+  fgets(name, sizeof(name), stdin);
+  name[strlen(name)-1] = 0;
+  struct player* c = newStruct(name,score);
+
+  clientLogicMultiple(c, IP);
 
 }

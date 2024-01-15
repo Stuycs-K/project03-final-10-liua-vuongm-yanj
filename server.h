@@ -14,4 +14,5 @@ void subserver_logic(int client_socket);
 void displayP(struct player *player);
 void sort(struct player** leaderboard, int numPlayer);
 void displayL(struct player** leaderboard);
+int serverLogicMultiple();
 #endif

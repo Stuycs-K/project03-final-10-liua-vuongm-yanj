@@ -55,8 +55,7 @@ void sort(struct player** leaderboard, int numPlayer){
 //  //0 = run 1 = no
 //   write(client_socket, input, sizeof(input));
 // }
-
-int main(int argc, char *argv[] ) {
+int serverLogicMultiple(){
   int sockets[MAX_CLIENT];
   for (int i = 0; i < MAX_CLIENT; i++) {
     sockets[i] = 0; //0 means unopened sockets
@@ -95,16 +94,8 @@ int main(int argc, char *argv[] ) {
        }
        if (sockets[i] > current){
          current = sockets[i];
-         //printf("setting current to open socket\n");
        }
-       // else{
-       //   printf("something is wrong\n");
-       // }
-       //makes sure that it is the biggest open because the you have to select from the biggest one
      }
-
-
-
 
     int v = select(current + 1, &read_fds, NULL, NULL, NULL);
     if(v<0){
@@ -162,4 +153,8 @@ int main(int argc, char *argv[] ) {
 
   //close(client_socket);
   return 0;
+}
+
+int main(int argc, char *argv[] ) {
+  serverLogicMultiple();
 }
