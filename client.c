@@ -10,6 +10,7 @@ int err1(){
     printf("%s\n",strerror(errno));
     exit(1);
 }
+
 struct player* newStruct(char name[35], int score){
   struct player* player = malloc(sizeof(struct player));
   strcpy(player->name,name);
@@ -18,25 +19,8 @@ struct player* newStruct(char name[35], int score){
 }
 
 void display(struct player *player){
-  printf("%s,%d\n" , player -> name, player -> score);
+  printf("%s, %d\n" , player -> name, player -> score);
 }
-
-int canRun(int server_socket, int run){
- //0 = run 1 = no
-  char signal[BUFFER_SIZE];
-  int x = read(server_socket, signal, sizeof(signal));
-  signal[strcspn(signal, "\r\n")] = 0;
-  if(x == 0){
-    printf("server closed");
-  }
-  else if(x>0){
-    if(strcmp(signal, "yes") != 0 || strcmp(signal, "no")) {
-      run = 1;
-    }
-  }
-  return run;
-}
-
 
 int main(int argc, char *argv[] ) {
   char* IP = "127.0.0.1";
@@ -51,6 +35,7 @@ int main(int argc, char *argv[] ) {
   int score = 0;
   printf("Enter your name: ");
   fgets(name, sizeof(name), stdin);
+  name[strlen(name)-1] = 0;
   struct player* c = newStruct(name,score);
 
   //display(c);
@@ -71,13 +56,16 @@ int main(int argc, char *argv[] ) {
     // printf("Ask a Question: \n");
     select(server_socket + 1, &read_fds, NULL, NULL, NULL);
 
+    // write(server_socket, c, sizeof(struct player));
 
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       fgets(input, sizeof(input), stdin);
       input[strcspn(input, "\r\n")] = 0;
       //printf("%s\n",input);
     //  printf("got user question\n");
-      int stuff = write(server_socket,input,sizeof(input));
+      strcpy(c->question, input);
+      int stuff = write(server_socket, c, sizeof(struct player));
+      display(c);
       if(stuff < 0){
         err(stuff, "try to write to server");
       }
@@ -106,20 +94,6 @@ int main(int argc, char *argv[] ) {
       }
    }
 
-
-    // if(run == 0){
-    //   while(time(NULL) - start < (time_t) (MINUTES * SECONDS_PER_MINUTE)) {
-      // int server_socket = client_tcp_handshake(IP);
-      //printf("client connected.\n");
-      // clientLogic(server_socket, c);
-      // sleep(1);
-      // printf("%ld\n", time(NULL) - start);
-    // }
-    // }
-  loop = 1;
-
-
   }
-  // close(server_socket);
 
 }

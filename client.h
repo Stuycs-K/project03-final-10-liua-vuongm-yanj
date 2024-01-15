@@ -8,6 +8,6 @@ int err1();
 int canRun(int server_socket, int run);
 struct player* newStruct(char name[35], int score);
 void clientLogic(int server_socket, struct player* current);
-struct player { char name[35]; int score;};
+struct player { char name[35]; char question[1024]; int score;};
 void display(struct player *player);
 #endif

@@ -1,5 +1,6 @@
 #include "server.h"
 #include "networking.h"
+// #include "client.h"
 #include <errno.h>
 int err1(){
     printf("errno %d\n",errno);
@@ -8,21 +9,52 @@ int err1(){
 }
 
 void displayP(struct player *player){
-  printf("%s,%d\n" , player -> name, player -> score);
+  printf("%s, %d\n" , player -> name, player -> score);
 }
 
-void displayL(struct leaderboard *leaderboard){
-  displayP(leaderboard -> p1);
-  displayP(leaderboard -> p2);
-  displayP(leaderboard -> p3);
-  displayP(leaderboard -> p4);
-  displayP(leaderboard -> p5);
+struct player* newStruct(char name[35], int score){
+  struct player* player = malloc(sizeof(struct player));
+  strcpy(player->name,name);
+  player->score = score;
+  return player;
 }
 
-void sendRun(int client_socket, char* input){
- //0 = run 1 = no
-  write(client_socket, input, sizeof(input));
+struct player** newStructL(){
+  struct player** leaderboard = malloc((sizeof(struct player))*5);
+  for (int i = 0; i < 5; i++) {
+    leaderboard[i] = malloc(sizeof(struct player));
+  }
+  return leaderboard;
 }
+
+void displayL(struct player** leaderboard){
+  printf("\n");
+  printf("Leaderboard:\n");
+  for (int i = 0; i < 5; i++) {
+    printf("Client %d: ", i);
+    displayP(leaderboard[i]);
+  }
+    printf("\n");
+}
+
+void sort(struct player** leaderboard, int numPlayer){
+  for(int i = 0; i<numPlayer; i++){
+    for(int j = i+1; j<numPlayer; j++){
+      if(leaderboard[i]-> score < leaderboard[j]-> score){
+        //struct player* temp = newStruct(name,score);
+        struct player* temp = newStruct(leaderboard[i]-> name, leaderboard[i]-> score);
+        leaderboard[i] = leaderboard[j];
+        leaderboard[j] = temp;
+      }
+    }
+  }
+}
+
+
+// void sendRun(int client_socket, char* input){
+//  //0 = run 1 = no
+//   write(client_socket, input, sizeof(input));
+// }
 
 int main(int argc, char *argv[] ) {
   int sockets[MAX_CLIENT];
@@ -42,10 +74,13 @@ int main(int argc, char *argv[] ) {
   fgets(userInput, sizeof(userInput), stdin);
 
   char input[BUFFER_SIZE];
+  struct player* now = malloc(sizeof(struct player));
 
   FD_ZERO(&read_fds);
   FD_SET(STDIN_FILENO, &read_fds);
   FD_SET(listen_socket, &read_fds);
+
+  struct player** leaderboard = newStructL(); //creating leaderboard
 
   while(1){
     FD_ZERO(&read_fds);
@@ -53,7 +88,6 @@ int main(int argc, char *argv[] ) {
     FD_SET(listen_socket, &read_fds);
 
     current = listen_socket; // file descriptor of current client
-
      for (int i = 0; i < MAX_CLIENT; i++) {
        if (sockets[i] > 0){
          FD_SET(sockets[i], &read_fds);
@@ -87,32 +121,33 @@ int main(int argc, char *argv[] ) {
       for (int i = 0; i < MAX_CLIENT; i++) {
         if (sockets[i] == 0) { // last open socket
           sockets[i] = client_socket; // store socket in first unopen socket
+          //leaderboard[i] = client_socket;
           printf("storing client into socket\n");
           break;
         }
       }
     }
 
-    // for (int i = 0; i < MAX_CLIENT; i++) {
-    //   printf("%d", sockets[i]);
-    // }
-
     for (int i = 0; i < MAX_CLIENT; i++) {
       //printf("%d", sockets[i]);
       if (FD_ISSET(sockets[i], &read_fds)) {
         printf("reading from socket %d\n", i);
-        int bytes = read(sockets[i], input, sizeof(input));
-        input[strcspn(input, "\r\n")] = 0;
-        //printf("%s\n",input);
-        if (bytes > 0) {
-          printf("Question Recieved (from client): %s \n", input);
+        int p = read(sockets[i], now, sizeof(struct player));
+        //printf("%s\n", leaderboard[i] -> name);
+        if (p > 0) {
+          leaderboard[i] = now;
+          displayL(leaderboard);
+          printf("Question Recieved (from client): %s \n", now->question);
           printf("Answer with yes/no \n");
           fgets(input, sizeof(input), stdin);
           input[strcspn(input, "\r\n")] = 0;
-          write(client_socket, input, sizeof(input));
-          // sendRun(client_socket,input);
+          write(sockets[i], input, sizeof(input));
+          if(strcasecmp(input, "yes") == 0){
+              leaderboard[i] -> score ++;
+          }
+          displayL(leaderboard);
         }
-        else if(bytes == 0){
+        else if(p == 0){
           close(sockets[i]);
           sockets[i] = 0;
           printf("closed");
@@ -122,17 +157,6 @@ int main(int argc, char *argv[] ) {
         }
       }
     }
-    //
-    // if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-    //   printf("reading from stdin\n");
-    //   fgets(input, sizeof(input), stdin);
-    //   input[strcspn(input, "\r\n")] = 0;
-    //   write(client_socket, input, sizeof(input)) ;
-    //     sendRun(current);
-    //   //printf("Message sent (to client %d): %s\n", i, input);
-    //
-    //
-    // }
 
   }
 
