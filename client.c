@@ -37,7 +37,8 @@ static void sighandler(int signo){
   if (signo == SIGINT){
     char filename[BUFFER_SIZE];
     sprintf(filename, "transcript_%s.txt", GLOBAL_NAME);
-    printf("You have quit the game :( \nHere is a transcript of your game (%s):\n", filename);
+    printf(Red "\nYou have quit the game :( \n");
+    printf(White "Here is a transcript of your game (%s):\n", filename);
     printf("-----------------------------------------\n");
     printTranscript(filename);
     printf("-----------------------------------------\n");
@@ -129,7 +130,9 @@ void questionsLogic(int server_socket, struct player* current){
   if (t_file == -1) perror("opening file error");
 
   while(1){
-    printf("%d Questions left. Ask your next question:\n", questions);
+    printf(Yellow "%d Questions left.\n", questions);
+    printf(Blue "Ask your next question:\n");
+    printf(White ">> ");
     signal(SIGINT, sighandler);
     // write QUESTION 1,2, ... to transcription file
     sprintf(buff, "QUESTION %d: ", 20 - questions); // formats the string and puts it into buff
@@ -146,7 +149,7 @@ void questionsLogic(int server_socket, struct player* current){
     write(t_file, question, strlen(question));
 
     // read answer from server
-    printf("server typing...\n");
+    printf(Black "server typing...\n");
     read(server_socket, buff, sizeof(buff));
 
     // write answer into transcription file
@@ -161,7 +164,8 @@ void questionsLogic(int server_socket, struct player* current){
       winBoolean = 1;    
       break;
     }
-    printf("answer received: %s\n", buff);
+    printf(Blue "answer: \n");
+    printf(White ">> %s\n", buff);
     if(questions == 0){
       break;
     }
@@ -169,23 +173,23 @@ void questionsLogic(int server_socket, struct player* current){
   
    // break becasue of win
   if(winBoolean){
-    printf("you guessed the mystery word!\n");
+    printf(Green "You guessed the mystery word!\n");
     char filename[BUFFER_SIZE];
     sprintf(filename, "transcript_%s.txt", current->name);
-    printf("CONGRATS! Here is a transcript of the game (%s):\n", filename);
+    printf(White "CONGRATS! Here is a transcript of the game (%s):\n", filename);
     printf("-----------------------------------------\n");
     printTranscript(filename);
     printf("-----------------------------------------\n");
   }
    // break because no more questions
   else{
-    printf("Sorry!! You've reached the maximum questions!\n");
+    printf(Red "Sorry!! You've reached the maximum questions!\n");
     char filename[BUFFER_SIZE];
     sprintf(filename, "transcript_%s.txt", current->name);
-    printf("Next Time! Here is a transcript of the game (%s):\n", filename);
-    printf("-----------------------------------------\n");
+    printf( White "Next Time! Here is a transcript of the game (%s):\n", filename);
+    printf(Black "-----------------------------------------\n");
     printTranscript(filename);
-    printf("-----------------------------------------\n");
+    printf(Black "-----------------------------------------\n");
   }
 }
 
@@ -200,7 +204,7 @@ int main(int argc, char *argv[] ) {
     IP=argv[1];
   }
   int server_socket = client_tcp_handshake(IP);
-  printf("Connected Server at IP: %s\n\n", IP);
+  printf(Black "Connected Server at IP: %s\n\n", IP);
 
 
   // receiving the game mode from server
@@ -224,7 +228,8 @@ int main(int argc, char *argv[] ) {
   if(modeBoolean20Game){
     char name[35];
     int score = 0;
-    printf("Enter your name: ");
+    printf(Blue "Enter your name: \n");
+    printf(White ">> " Clear);
     fgets(name, sizeof(name), stdin);
     name[strcspn(name, "\r\n")] = 0; // remove end character
     struct player* c = newStruct(name,score);
@@ -232,7 +237,8 @@ int main(int argc, char *argv[] ) {
     int clientNum = 1; // for numbering questions in transcript
 
 
-    printf("20 Questions Mode!\nGame Started!\n\n");
+    printf(Magenta "20 Questions Mode!\n");
+    printf(Cyan "Game Started!\n\n");
     int server_socket = client_tcp_handshake(IP);
     questionsLogic(server_socket,c);
 

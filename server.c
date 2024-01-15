@@ -166,18 +166,21 @@ void questionsLogic(){
   int listen_socket = server_setup();
   int client_socket = server_tcp_handshake(listen_socket);
   char userInput[100];
-  printf("Set your word: ");
+  printf(Blue "Set your word: \n");
+  printf(Clear ">> ");
   fgets(userInput, sizeof(userInput), stdin);
   
   char buff[BUFFER_SIZE];
   int winBoolean = 0;
   while(1){
-    printf("client typing....\n");
+    printf(Black "client typing....\n\n");
     int bytes_read = read(client_socket, buff, sizeof(buff));
     // detect if client is still writing stuff
     if(bytes_read){
-      printf("Question from player: %s\n",buff);
-      printf("Answer yes/no/ans\n");
+      printf(Blue "Question: \n");
+      printf(Clear ">> %s",buff);
+      printf(Blue "answer: (yes/no/ans)\n");
+      printf(Clear ">> ");
       fgets(buff, sizeof(buff),stdin);
       write(client_socket, buff,sizeof(buff));
       int result = strcmp(buff,"ans");
@@ -191,10 +194,10 @@ void questionsLogic(){
     }
   }
   if(winBoolean){
-    printf("client guessed word!\n");
+    printf(Green "client guessed word!\n");
   }
   else{
-    printf("client lost!\n");
+    printf(Red "client lost!\n");
   }
 }
 
@@ -204,24 +207,24 @@ int main(int argc, char *argv[] ) {
   // setting the game mode
   char modeStdIn[100];
   int modeBoolean20Game = 0; // default is 2 minutes, boolean is false
-  printf("Enter 1 for 20 Questions (one player) or 2 for 2 minutes (multi player)\n");
+  printf(White "Enter 1 for 20 Questions (one player) or 2 for 2 minutes (multi player)\n>> ");
   fgets(modeStdIn, sizeof(modeStdIn), stdin);
   int result = strcmp(modeStdIn,"1"); // not sure why it returns 10 if equal
   if(result == 10){ // if user input is 1
     modeBoolean20Game = 1; // boolean set to true
-    printf("20 Questions Mode!\n");
+    printf(Magenta "20 Questions Mode!\n" Clear);
   }
   else{
-    printf("2 Minutes Mode!\n");
+    printf( Magenta "2 Minutes Mode!\n");
   }
 
   
   // communicate game mode to client
 
-  printf("Waiting for client to connect...\n");  
+  printf(Black "Waiting for client to connect...\n");  
   int listen_socket = server_setup();
   int client_socket = server_tcp_handshake(listen_socket);
-  printf("Client connected!\n\n");
+  printf(Green "Client connected!\n\n");
   write(client_socket, &modeBoolean20Game, sizeof(modeBoolean20Game));
   close(listen_socket);
   close(client_socket);
