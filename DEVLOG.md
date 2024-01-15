@@ -44,7 +44,7 @@ added print statements to display the value of sem before incrementing and the v
 ### 2024-01-10 - remove semaphores, rethinking implementation
 
 debugged for like 15 minutes and realized semaphores were not ideal for my usage, so I removed semaphores entirely from code
-
+- my semaphore code unfortunately did not make it on the final project, it is in my branch "Andrew" and not merged into main
 ### 2024-01-11 - help jiayu with select code
 
 as a group, we collectively tried to implement the select function into our client and server
@@ -56,6 +56,7 @@ i first tried implementing select with two client sockets, but that didn't work 
 ### 2024-01-12 started working on 20 questions game mode
 
 added booleans to let user choose between two game modes, 20 questions and 2 minutes
+- started working in 20Questions branch
 
 ### 2024-01-14 implemented 20 questions
 - add selection phase for 20 question or 2 minutes

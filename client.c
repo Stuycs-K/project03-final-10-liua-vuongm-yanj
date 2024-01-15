@@ -12,6 +12,14 @@ int err1(){
     exit(1);
 }
 
+static void sighandler(int signo){
+    if (signo == SIGINT){
+        printf("You have quit the game :( \n");
+        exit(1);
+    }
+}
+
+
 struct player* newStruct(char name[35], int score){
   struct player* player = malloc(sizeof(struct player));
   strcpy(player->name,name);
@@ -114,7 +122,7 @@ void questionsLogic(int server_socket, struct player* current){
 
   while(1){
     printf("%d Questions left. Ask your next question:\n", questions);
-
+    signal(SIGINT, sighandler);
     // write QUESTION 1,2, ... to transcription file
     sprintf(buff, "QUESTION %d: ", 20 - questions); // formats the string and puts it into buff
     char* p = buff;
