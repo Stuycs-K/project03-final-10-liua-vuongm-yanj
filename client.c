@@ -60,6 +60,24 @@ void clientLogic(int server_socket, struct player* current, int num){
   close(server_socket);
 }
 
+void printTranscript(char* file) {
+  char buff[BUFFER_SIZE*2]; // just in case (2000 bytes)
+  int t_file;
+
+  t_file = open(file, O_RDONLY, 0);
+  if (t_file == -1) perror("reading file error\n");
+
+  int bytes;
+  bytes = read(t_file, buff, BUFFER_SIZE);
+  // printf("bytes: %d\n", bytes);
+  if(bytes == -1) {perror("reading bytes error");}//all non 0 are true
+
+  printf("%s\n",buff);
+
+  close(t_file);
+  // }
+} 
+
 
 void questionsLogic(int server_socket, struct player* current){
   char buff[BUFFER_SIZE];
@@ -102,10 +120,22 @@ void questionsLogic(int server_socket, struct player* current){
     int result = strcmp(buff,"ans"); // checking if received win
     if(result == 10){ // server said we guessed the answer!
       winBoolean = 1;
+      char filename[BUFFER_SIZE];
+      sprintf(filename, "transcript_%s.txt", current->name);
+      printf("CONGRATS! Here is a transcript of the game (%s):\n", filename);
+      printf("-----------------------------------------\n");
+      printTranscript(filename);
+      printf("-----------------------------------------\n");
       break;
     }
     printf("answer received: %s\n", buff);
     if(questions == 0){
+      char filename[BUFFER_SIZE];
+      sprintf(filename, "transcript_%s.txt", current->name);
+      printf("Next Time! Here is a transcript of the game (%s):\n", filename);
+      printf("-----------------------------------------\n");
+      printTranscript(filename);
+      printf("-----------------------------------------\n");
       break;
     }
   }
@@ -113,12 +143,17 @@ void questionsLogic(int server_socket, struct player* current){
    // break becasue of win
   if(winBoolean){
     printf("you guessed the mystery word!\n");
+
+    
   }
    // break because no more questions
   else{
     printf("You've reached the maximum questions!\n");
   }
 }
+
+
+
 
 
 
