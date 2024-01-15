@@ -6,17 +6,43 @@
 #include <unistd.h>
 #include <time.h>
 
+char* GLOBAL_NAME;
+
 int err1(){
     printf("errno %d\n",errno);
     printf("%s\n",strerror(errno));
     exit(1);
 }
 
+void printTranscript(char* file) {
+  char buff[BUFFER_SIZE*2]; // just in case (2000 bytes)
+  int t_file;
+
+  t_file = open(file, O_RDONLY, 0);
+  if (t_file == -1) perror("reading file error\n");
+
+  int bytes;
+  bytes = read(t_file, buff, BUFFER_SIZE*2);
+  // printf("bytes: %d\n", bytes);
+  if(bytes == -1) {perror("reading bytes error");}//all non 0 are true
+
+  printf("%s\n",buff);
+
+  close(t_file);
+  // }
+} 
+
+
 static void sighandler(int signo){
-    if (signo == SIGINT){
-        printf("You have quit the game :( \n");
-        exit(1);
-    }
+  if (signo == SIGINT){
+    char filename[BUFFER_SIZE];
+    sprintf(filename, "transcript_%s.txt", GLOBAL_NAME);
+    printf("You have quit the game :( \nHere is a transcript of your game (%s):\n", filename);
+    printf("-----------------------------------------\n");
+    printTranscript(filename);
+    printf("-----------------------------------------\n");
+    exit(1);
+  }
 }
 
 
@@ -90,24 +116,6 @@ void clientLogicMultiple(struct player* c, char* ip){
 
   }
 }
-
-void printTranscript(char* file) {
-  char buff[BUFFER_SIZE*2]; // just in case (2000 bytes)
-  int t_file;
-
-  t_file = open(file, O_RDONLY, 0);
-  if (t_file == -1) perror("reading file error\n");
-
-  int bytes;
-  bytes = read(t_file, buff, BUFFER_SIZE*2);
-  // printf("bytes: %d\n", bytes);
-  if(bytes == -1) {perror("reading bytes error");}//all non 0 are true
-
-  printf("%s\n",buff);
-
-  close(t_file);
-  // }
-} 
 
 
 void questionsLogic(int server_socket, struct player* current){
@@ -197,9 +205,9 @@ int main(int argc, char *argv[] ) {
 
   // receiving the game mode from server
   int buffer[BUFFER_SIZE];
-  printf("AIODUHIOAUSDOIASHIDAOS\n");
+  // printf("AIODUHIOAUSDOIASHIDAOS\n");
   read(server_socket, buffer, sizeof(buffer)); // reading mode
-  printf("I WANNA KISmS\n");
+  // printf("I WANNA KISmS\n");
   close(server_socket);
   int modeBoolean20Game = 0; // default to 2 minutes
   if(*buffer == 1){
@@ -209,7 +217,7 @@ int main(int argc, char *argv[] ) {
 
   // setup name and score
 
-  printf("mode boolean: %d\n", modeBoolean20Game);
+  // printf("mode boolean: %d\n", modeBoolean20Game);
 
 
 
@@ -220,6 +228,7 @@ int main(int argc, char *argv[] ) {
     fgets(name, sizeof(name), stdin);
     name[strcspn(name, "\r\n")] = 0; // remove end character
     struct player* c = newStruct(name,score);
+    GLOBAL_NAME = c->name;
     int clientNum = 1; // for numbering questions in transcript
 
 
