@@ -68,7 +68,7 @@ void printTranscript(char* file) {
   if (t_file == -1) perror("reading file error\n");
 
   int bytes;
-  bytes = read(t_file, buff, BUFFER_SIZE);
+  bytes = read(t_file, buff, BUFFER_SIZE*2);
   // printf("bytes: %d\n", bytes);
   if(bytes == -1) {perror("reading bytes error");}//all non 0 are true
 
@@ -81,7 +81,7 @@ void printTranscript(char* file) {
 
 void questionsLogic(int server_socket, struct player* current){
   char buff[BUFFER_SIZE];
-  int questions = 20;
+  int questions = 5;
   int winBoolean = 0;
   int t_file;
   sprintf(buff, "transcript_%s.txt", current->name);

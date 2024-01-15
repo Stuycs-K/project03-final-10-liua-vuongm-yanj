@@ -82,6 +82,13 @@ start working on allowing multiple clients to have their separate files using PI
 fix some bugs due to merging code and differentiate client's transcripts using names instead of PID
 format code a bit better and document a little better
 
+### 2024-01-11 - attempted to implement multiple clients server connection
+- attempted to implement multiple clients server connection
+- it didn't work (server kept blocking and nothing was being received)
+
+### 2024-01-14 printed file transcription for 20 questions
+- print transcription at end regardless or win or loss
+
 ## Jiayu Yan
 
 ### 2024-01-02 - started basic proposal + assigned rules to each member
