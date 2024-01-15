@@ -4,6 +4,13 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <time.h>
+
+int err1(){
+    printf("errno %d\n",errno);
+    printf("%s\n",strerror(errno));
+    exit(1);
+}
 
 struct player* newStruct(char name[35], int score){
   struct player* player = malloc(sizeof(struct player));
@@ -13,51 +20,67 @@ struct player* newStruct(char name[35], int score){
 }
 
 void display(struct player *player){
-  printf("%s,%d\n" , player -> name, player -> score);
+  printf("%s, %d\n" , player -> name, player -> score);
 }
 
-void clientLogic(int server_socket, struct player* current, int num){
-  char userInput[100];
-  char response[100];
-  int t_file;
+void clientLogicMultiple(struct player* c, char* ip){
+  //display(c);
+  fd_set read_fds;
+  char input[BUFFER_SIZE];
 
-  char b[BUFFER_SIZE];
-  sprintf(b, "transcript_%s.txt", current->name);
+  int server_socket = client_tcp_handshake(ip);
+  int loop = 0;
 
-  t_file = open(b, O_RDWR | O_APPEND | O_CREAT, 0644);
-  if (t_file == -1) perror("opening file error");
+  printf("Ask a Question: \n");
 
-  int temp =0;
-  printf("Ask a Question: ");
-  fgets(userInput, sizeof(userInput), stdin);
+  while(1){
+    FD_ZERO(&read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    FD_SET(server_socket, &read_fds);
 
-  char buff[100];
-  sprintf(buff, "QUESTION %d: ", num); // formats the string and puts it into buff
-  char* p = buff;
-  write(t_file, p, strlen(p));
+    //if(loop !=  0) canRun(server_socket, run);
+    // printf("Ask a Question: \n");
+    select(server_socket + 1, &read_fds, NULL, NULL, NULL);
 
-  char* question = userInput;
-  write(t_file, question, strlen(question)); // put into file
+    // write(server_socket, c, sizeof(struct player));
 
-  write(server_socket,userInput,sizeof(userInput));
+    if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+      fgets(input, sizeof(input), stdin);
+      input[strcspn(input, "\r\n")] = 0;
+      //printf("%s\n",input);
+    //  printf("got user question\n");
+      strcpy(c->question, input);
+      int stuff = write(server_socket, c, sizeof(struct player));
+      display(c);
+      if(stuff < 0){
+        err(stuff, "try to write to server");
+      }
+      //printf("sent to server\n");
+    }
 
 
-  read(server_socket, response, sizeof(response)); //read modified
+    if (FD_ISSET(server_socket, &read_fds)) {
+      //printf("getting response from server\n");
+      int bytes = read(server_socket, input, sizeof(input));
+      if(bytes<0) err(bytes,"reading from server");
+      if(bytes == 0){
+        printf("0 bytes read\n");
+        close(server_socket);
+        server_socket = 0;
+        printf("SERVER DISCONNECTED\n");
+      }
+      if(bytes > 0){
+        if(strcasecmp(input, "yes") == 0){
+            c -> score ++;
+          printf("score updated\n");
+        }
+        printf("Current Score: %d\n", c-> score);
+        printf("Answer Received (from server): %s\n", input);
+        printf("Ask a Question: \n");
+      }
+   }
 
-  response[strcspn(response, "\r\n")] = 0; //remove empty space
-
-  printf("Answer Received (from server): %s\n", response);
-  if(strcasecmp(response, "yes") == 0){
-      current -> score ++;
   }
-
-  char* r = response;
-  write(t_file, "ANSWER: ", strlen("ANSWER: "));
-  write(t_file, r, strlen(r)); // put into file
-  write(t_file, "\n\n", strlen("\n\n")); // formatting
-
-  printf("Current Score: %d\n", current-> score);
-  close(server_socket);
 }
 
 void printTranscript(char* file) {
@@ -166,7 +189,10 @@ int main(int argc, char *argv[] ) {
 
   // receiving the game mode from server
   int buffer[BUFFER_SIZE];
-  read(server_socket, buffer,sizeof(buffer)); // reading mode
+  printf("AIODUHIOAUSDOIASHIDAOS\n");
+  read(server_socket, buffer, sizeof(buffer)); // reading mode
+  printf("I WANNA KISmS\n");
+  close(server_socket);
   int modeBoolean20Game = 0; // default to 2 minutes
   if(*buffer == 1){
     modeBoolean20Game = 1; // set to 20 questions
@@ -174,23 +200,44 @@ int main(int argc, char *argv[] ) {
 
 
   // setup name and score
-  char name[35];
-  int score = 0;
-  printf("Enter your name: ");
-  fgets(name, sizeof(name), stdin);
-  name[strcspn(name, "\r\n")] = 0; // remove end character
-  struct player* c = newStruct(name,score);
-  int clientNum = 1; // for numbering questions in transcript
+
+  printf("mode boolean: %d\n", modeBoolean20Game);
 
 
 
   if(modeBoolean20Game){
+    char name[35];
+    int score = 0;
+    printf("Enter your name: ");
+    fgets(name, sizeof(name), stdin);
+    name[strcspn(name, "\r\n")] = 0; // remove end character
+    struct player* c = newStruct(name,score);
+    int clientNum = 1; // for numbering questions in transcript
+
+
     printf("20 Questions Mode!\nGame Started!\n\n");
+    int server_socket = client_tcp_handshake(IP);
     questionsLogic(server_socket,c);
 
   }
   else{
+
+    char name[35];
+    int score = 0;
+    printf("Enter your name: ");
+    fgets(name, sizeof(name), stdin);
+    name[strcspn(name, "\r\n")] = 0; // remove end character
+    struct player* c = newStruct(name,score);
+    int clientNum = 1; // for numbering questions in transcript
+
+
     printf("2 Minutes Mode!\n");
+    name[strlen(name)-1] = 0;
+    // struct player* c = newStruct(name,score);
+
+    clientLogicMultiple(c, IP);
   }
   
+  
+
 }

@@ -104,3 +104,11 @@ figured out client logic for game scoring + attempted implementation for leaderb
 ### 2024-01-08 - client application
 decided to add struct for each player to organize score and name of client
 added feature to keep track of score for each individual user
+
+### 2024-01-09 - select for multiple client
+connecting multiple clients to one server using select
+debugging select code for various clients to use at once (in progress)
+
+### 2024-01-10 - select for multiple client
+connecting multiple clients to one server using select
+debugging select code for various clients to use at once (in progress)

@@ -8,11 +8,12 @@
 #include <errno.h>
 #include <signal.h>
 #include <sys/wait.h>
-#include <sys/socket.h> 
+#include <sys/socket.h>
 #include <netdb.h>
 #include <string.h>
 
-
+#define MINUTES 2
+#define SECONDS_PER_MINUTE 60
 #ifndef NETWORKING_H
 #define NETWORKING_H
 #define PORT "19230"
