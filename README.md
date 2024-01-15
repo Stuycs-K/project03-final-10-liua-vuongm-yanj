@@ -19,6 +19,7 @@ One single player mode which we call "20 questions." There is one server who is 
 
 ## "20 questions"
 
+Answerer run ./server and enter 1 into stdin to select the game mode 20 Questions. When it displays "Waiting for client to connect," tell the questioner to connect. The questioner will run ./client and after making a successful connection, the answerer will have "Client connected!" displayed in their terminal and be asked to set their word. The questioner will be asked to enter their name and be prompted to ask their first question. The number of questions left will be displayed in the questioner's terminal and when they ask a question, the answerer can respond with "yes," "no," or "ans" to signify that the questioner has correctly guessed the mystery object! Once the game is over, whether because the answerer has ran out of questions or guessed the mystery object, a transcript of the game will be printed in the questioner's terminal. It will also be stored in a txt file named "transcript_(Name).txt" where name is the stdin you provided when the answerer was prompted to enter their name. **Good luck and have fun!!!**
 
 ## "2 minutes"
 
