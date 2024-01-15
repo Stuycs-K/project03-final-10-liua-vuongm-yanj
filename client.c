@@ -81,7 +81,7 @@ void printTranscript(char* file) {
 
 void questionsLogic(int server_socket, struct player* current){
   char buff[BUFFER_SIZE];
-  int questions = 5;
+  int questions = 20;
   int winBoolean = 0;
   int t_file;
   sprintf(buff, "transcript_%s.txt", current->name);
@@ -163,16 +163,6 @@ int main(int argc, char *argv[] ) {
   int server_socket = client_tcp_handshake(IP);
   printf("Connected Server at IP: %s\n\n", IP);
 
-  // setup name and score
-  char name[35];
-  int score = 0;
-  printf("Enter your name: ");
-  fgets(name, sizeof(name), stdin);
-  name[strcspn(name, "\r\n")] = 0; // remove end character
-  struct player* c = newStruct(name,score);
-
-  int clientNum = 1; // for numbering questions in transcript
-
 
   // receiving the game mode from server
   int buffer[BUFFER_SIZE];
@@ -183,6 +173,16 @@ int main(int argc, char *argv[] ) {
   }
 
 
+  // setup name and score
+  char name[35];
+  int score = 0;
+  printf("Enter your name: ");
+  fgets(name, sizeof(name), stdin);
+  name[strcspn(name, "\r\n")] = 0; // remove end character
+  struct player* c = newStruct(name,score);
+  int clientNum = 1; // for numbering questions in transcript
+
+
 
   if(modeBoolean20Game){
     printf("20 Questions Mode!\nGame Started!\n\n");
@@ -191,11 +191,6 @@ int main(int argc, char *argv[] ) {
   }
   else{
     printf("2 Minutes Mode!\n");
-    while(1){
-    int server_socket = client_tcp_handshake(IP);
-    clientLogic(server_socket, c, clientNum);
-    clientNum++;
-    }
   }
   
 }

@@ -17,6 +17,10 @@ void subserver_logic(int client_socket){
 }
 
 void questionsLogic(int client_socket){
+  char userInput[100];
+  printf("Set your word: ");
+  fgets(userInput, sizeof(userInput), stdin);
+  
   char buff[BUFFER_SIZE];
   int winBoolean = 0;
   while(1){
@@ -63,12 +67,7 @@ int main(int argc, char *argv[] ) {
     printf("2 Minutes Mode!\n");
   }
 
-
-  // setting the word
-  char userInput[100];
-  printf("Set your word: ");
-  fgets(userInput, sizeof(userInput), stdin);
-
+  
   // communicate game mode to client
 
   printf("Waiting for client to connect...\n");  
@@ -77,26 +76,17 @@ int main(int argc, char *argv[] ) {
   printf("Client connected!\n\n");
   write(client_socket, &modeBoolean20Game, sizeof(modeBoolean20Game));
 
+
+
+
   if(modeBoolean20Game){
     // code for 20 questions
+    // setting the word
     questionsLogic(client_socket);
 
   }
   else{
     // code for 2 minutes
-    int x = 0;
-    while(x == 0){
-    int client_socket = server_tcp_handshake(listen_socket);
-    //num++;
-    pid_t f = fork();
-    if(f == 0){
-      subserver_logic(client_socket);
-      //close(client_socket);
-      exit(0);
-    }
-    else{
-      close(client_socket);
-    }
-    }
   }
+
 }
