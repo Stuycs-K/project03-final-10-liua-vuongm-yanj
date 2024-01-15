@@ -90,6 +90,10 @@ format code a bit better and document a little better
 ### 2024-01-14 printed file transcription for 20 questions
 - print transcription at end regardless or win or loss
 
+### 2024-01-15 add transcription for signals + prettify
+- print transcription if client disconnects using signals
+- reformat the terminal prompts and add color to make more aesthetically pleasing
+
 ## Jiayu Yan
 
 ### 2024-01-02 - started basic proposal + assigned rules to each member
