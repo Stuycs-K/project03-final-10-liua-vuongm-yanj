@@ -119,36 +119,34 @@ void questionsLogic(int server_socket, struct player* current){
     // checking if won
     int result = strcmp(buff,"ans"); // checking if received win
     if(result == 10){ // server said we guessed the answer!
-      winBoolean = 1;
-      char filename[BUFFER_SIZE];
-      sprintf(filename, "transcript_%s.txt", current->name);
-      printf("CONGRATS! Here is a transcript of the game (%s):\n", filename);
-      printf("-----------------------------------------\n");
-      printTranscript(filename);
-      printf("-----------------------------------------\n");
+      winBoolean = 1;    
       break;
     }
     printf("answer received: %s\n", buff);
     if(questions == 0){
-      char filename[BUFFER_SIZE];
-      sprintf(filename, "transcript_%s.txt", current->name);
-      printf("Next Time! Here is a transcript of the game (%s):\n", filename);
-      printf("-----------------------------------------\n");
-      printTranscript(filename);
-      printf("-----------------------------------------\n");
       break;
     }
   }
-
+  
    // break becasue of win
   if(winBoolean){
     printf("you guessed the mystery word!\n");
-
-    
+    char filename[BUFFER_SIZE];
+    sprintf(filename, "transcript_%s.txt", current->name);
+    printf("CONGRATS! Here is a transcript of the game (%s):\n", filename);
+    printf("-----------------------------------------\n");
+    printTranscript(filename);
+    printf("-----------------------------------------\n");
   }
    // break because no more questions
   else{
-    printf("You've reached the maximum questions!\n");
+    printf("Sorry!! You've reached the maximum questions!\n");
+    char filename[BUFFER_SIZE];
+    sprintf(filename, "transcript_%s.txt", current->name);
+    printf("Next Time! Here is a transcript of the game (%s):\n", filename);
+    printf("-----------------------------------------\n");
+    printTranscript(filename);
+    printf("-----------------------------------------\n");
   }
 }
 
