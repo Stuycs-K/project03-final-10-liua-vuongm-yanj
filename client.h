@@ -11,4 +11,5 @@ void clientLogic(int server_socket, struct player* current);
 struct player { char name[35]; char question[1024]; int score;};
 void display(struct player *player);
 void clientLogicMultiple(struct player* c, char* ip);
+void questionsLogic(struct player* current, char* ip);
 #endif

@@ -2,6 +2,9 @@
 #include "networking.h"
 // #include "client.h"
 #include <errno.h>
+
+struct player** leaderboard;
+
 int err1(){
     printf("errno %d\n",errno);
     printf("%s\n",strerror(errno));
@@ -45,17 +48,14 @@ void sort(struct player** leaderboard, int numPlayer){
         struct player* temp = newStruct(leaderboard[i]-> name, leaderboard[i]-> score);
         leaderboard[i] = leaderboard[j];
         leaderboard[j] = temp;
+        free(temp);
       }
     }
   }
 }
 
-
-// void sendRun(int client_socket, char* input){
-//  //0 = run 1 = no
-//   write(client_socket, input, sizeof(input));
-// }
 int serverLogicMultiple(){
+
   int sockets[MAX_CLIENT];
   for (int i = 0; i < MAX_CLIENT; i++) {
     sockets[i] = 0; //0 means unopened sockets
@@ -63,6 +63,7 @@ int serverLogicMultiple(){
 
   fd_set read_fds;
   int listen_socket, client_socket, current;
+
   current = 0;
   //assume this functuion correcly sets up a listening socket
   printf(White "Waiting for a client to connect...\n");
@@ -73,13 +74,13 @@ int serverLogicMultiple(){
   fgets(userInput, sizeof(userInput), stdin);
 
   char input[BUFFER_SIZE];
-  struct player* now = malloc(sizeof(struct player));
+
 
   FD_ZERO(&read_fds);
   FD_SET(STDIN_FILENO, &read_fds);
   FD_SET(listen_socket, &read_fds);
 
-  struct player** leaderboard = newStructL(); //creating leaderboard
+  leaderboard = newStructL(); //creating leaderboard
 
   while(1){
     FD_ZERO(&read_fds);
@@ -113,7 +114,6 @@ int serverLogicMultiple(){
       for (int i = 0; i < MAX_CLIENT; i++) {
         if (sockets[i] == 0) { // last open socket
           sockets[i] = client_socket; // store socket in first unopen socket
-          //leaderboard[i] = client_socket;
           printf("storing client into socket\n");
           break;
         }
@@ -123,29 +123,39 @@ int serverLogicMultiple(){
     for (int i = 0; i < MAX_CLIENT; i++) {
       //printf("%d", sockets[i]);
       if (FD_ISSET(sockets[i], &read_fds)) {
-        printf("reading from socket %d\n", i);
+        printf(White "Reading from Client %d\n", i);
+        struct player* now = malloc(sizeof(struct player));
+
         int p = read(sockets[i], now, sizeof(struct player));
-        //printf("%s\n", leaderboard[i] -> name);
+
         if (p > 0) {
           leaderboard[i] = now;
-          //displayL(leaderboard);
-          printf("Question Recieved (from client): %s \n", now->question);
-          printf("Answer with yes/no \n");
+          printf(White"Question Recieved (from client): %s \n", now->question);
+          printf(Blue "answer: (yes/no/ans)\n");
           fgets(input, sizeof(input), stdin);
           input[strcspn(input, "\r\n")] = 0;
           write(sockets[i], input, sizeof(input));
           if(strcasecmp(input, "yes") == 0){
               leaderboard[i] -> score ++;
           }
-        //  displayL(leaderboard);
+
+          sort(leaderboard,5);
+          displayL(leaderboard);
+          if(strcasecmp(input, "ans") == 0){
+            exit(1);
+          }
+
+          free(now);
         }
         else if(p == 0){
           close(sockets[i]);
           sockets[i] = 0;
           printf("closed");
+          free(now);
         }
         else{
           perror("read error");
+          free(now);
         }
       }
     }
@@ -210,13 +220,15 @@ int main(int argc, char *argv[] ) {
   if(strcmp(argv[1],"1") == 0){
     // code for 20 questions
     // setting the word
-    printf(Magenta "20 Questions Mode!\n" Clear);
+    printf(Magenta "20 Questions (S) Mode!\n" Clear);
     questionsLogic();
   }
   if(strcmp(argv[1],"2") == 0){
     // code for 2 minutes
-    printf(Magenta "2 min Mode!\n" Clear);
+    printf(Magenta "20 Questions (M)!\n" Clear);
     serverLogicMultiple();
   }
+
+  free(leaderboard);
 
 }

@@ -60,42 +60,46 @@ void display(struct player *player){
 
 void clientLogicMultiple(struct player* c, char* ip){
   //display(c);
+  //printf("hello");
   fd_set read_fds;
   char input[BUFFER_SIZE];
+  int winBoolean = 0;
+  int t_file;
+  sprintf(input, "transcript_%s.txt", c->name);
+  remove(input); // remove file if already exists
+  t_file = open(input, O_RDWR | O_APPEND | O_CREAT, 0611);
+  if (t_file == -1) perror("opening file error");
+
 
   int server_socket = client_tcp_handshake(ip);
-  int loop = 0;
-
-  printf("Ask a Question: ");
-
+  //int bug = 0;
   while(1){
     FD_ZERO(&read_fds);
     FD_SET(STDIN_FILENO, &read_fds);
     FD_SET(server_socket, &read_fds);
 
     //if(loop !=  0) canRun(server_socket, run);
-    // printf("Ask a Question: \n");
+    //printf("Ask a Question: \n");
+    //  if(bug!= 0) printf("Ask a Question: ");
     select(server_socket + 1, &read_fds, NULL, NULL, NULL);
-
     // write(server_socket, c, sizeof(struct player));
-
+    //bug++;
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       fgets(input, sizeof(input), stdin);
       input[strcspn(input, "\r\n")] = 0;
-      //printf("%s\n",input);
-    //  printf("got user question\n");
       strcpy(c->question, input);
       int stuff = write(server_socket, c, sizeof(struct player));
-      //display(c);
       if(stuff < 0){
         err(stuff, "try to write to server");
       }
-      //printf("sent to server\n");
+      char *question = input;
+      write(t_file, "QUESTION: ", strlen("QUESTION: "));
+      write(t_file, question, strlen(question));
+      write(t_file, "\n\n", strlen("\n\n")); // formatting
     }
 
 
     if (FD_ISSET(server_socket, &read_fds)) {
-      //printf("getting response from server\n");
       int bytes = read(server_socket, input, sizeof(input));
       if(bytes<0) err(bytes,"reading from server");
       if(bytes == 0){
@@ -105,21 +109,51 @@ void clientLogicMultiple(struct player* c, char* ip){
         printf("SERVER DISCONNECTED\n");
       }
       if(bytes > 0){
+        char* r = input;
+        write(t_file, "ANSWER: ", strlen("ANSWER: "));
+        write(t_file, r, strlen(r)); // put into file
+        write(t_file, "\n\n", strlen("\n\n")); // formatting
+
         if(strcasecmp(input, "yes") == 0){
             c -> score ++;
           printf("score updated\n");
+        }
+
+        if(strcasecmp(input, "ans") == 0){
+          winBoolean = 1;
+          break;
         }
         printf("Current Score: %d\n", c-> score);
         printf("Answer Received (from server): %s\n", input);
         printf("Ask a Question: \n");
       }
    }
-
+  }
+  if(winBoolean){
+    printf(Green "You guessed the mystery word!\n");
+    char filename[BUFFER_SIZE];
+    sprintf(filename, "transcript_%s.txt", c->name);
+    printf(White "CONGRATS! Here is a transcript of the game (%s):\n", filename);
+    printf("-----------------------------------------\n");
+    printTranscript(filename);
+    printf("-----------------------------------------\n");
+  }
+   // break because no more questions
+  else{
+    printf(Red "Sorry!! You've reached the maximum questions!\n");
+    char filename[BUFFER_SIZE];
+    sprintf(filename, "transcript_%s.txt", c->name);
+    printf( White "Next Time! Here is a transcript of the game (%s):\n", filename);
+    printf(Black "-----------------------------------------\n");
+    printTranscript(filename);
+    printf(Black "-----------------------------------------\n");
   }
 }
 
 
-void questionsLogic(int server_socket, struct player* current){
+void questionsLogic(struct player* current, char* ip){
+  int server_socket = client_tcp_handshake(ip);
+
   char buff[BUFFER_SIZE];
   int questions = 20;
   int winBoolean = 0;
@@ -200,31 +234,8 @@ void questionsLogic(int server_socket, struct player* current){
 
 int main(int argc, char *argv[] ) {
   char* IP = "127.0.0.1";
-  // if(argc>1){
-  //   IP=argv[1];
-  // }
-  // int server_socket = client_tcp_handshake(IP);
-  // printf(Black "Connected Server at IP: %s\n\n", IP);
-  //
-  //
-  // // receiving the game mode from server
-  // int buffer[BUFFER_SIZE];
-  // // printf("AIODUHIOAUSDOIASHIDAOS\n");
-  // read(server_socket, buffer, sizeof(buffer)); // reading mode
-  // // printf("I WANNA KISmS\n");
-  // close(server_socket);
-  //int modeBoolean20Game = 1; // default to 2 minutes
-  // if(*buffer == 1){
-  //   modeBoolean20Game = 1; // set to 20 questions
-  // }
 
-
-  // setup name and score
-
-  // printf("mode boolean: %d\n", modeBoolean20Game);
-
-
-if(strcmp(argv[1],"1") == 0){
+  if(strcmp(argv[1],"1") == 0){
     char name[35];
     int score = 0;
     printf(Blue "Enter your name: \n");
@@ -236,26 +247,21 @@ if(strcmp(argv[1],"1") == 0){
     int clientNum = 1; // for numbering questions in transcript
 
 
-    printf(Magenta "20 Questions Mode!\n");
+    printf(Magenta "20 Questions (S) Mode!\n");
     printf(Cyan "Game Started!\n\n");
-    int server_socket = client_tcp_handshake(IP);
-    questionsLogic(server_socket,c);
-
+    questionsLogic(c,IP);
   }
   if(strcmp(argv[1],"2") == 0){
-
+    printf("20 Questions (M) Mode!\n");
     char name[35];
     int score = 0;
     printf("Enter your name: ");
     fgets(name, sizeof(name), stdin);
-    name[strcspn(name, "\r\n")] = 0; // remove end character
-    struct player* c = newStruct(name,score);
+    name[strlen(name)-1] = 0;// remove end characterxe
     int clientNum = 1; // for numbering questions in transcript
+    struct player* c = newStruct(name,score);
 
 
-    printf("2 Minutes Mode!\n");
-    name[strlen(name)-1] = 0;
-    // struct player* c = newStruct(name,score);
 
     clientLogicMultiple(c, IP);
   }

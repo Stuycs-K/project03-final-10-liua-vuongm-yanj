@@ -24,7 +24,7 @@ added different semaphores to timeline
 
 ### 2024-01-08 - started semaphores implementations
 add accessSemaphore, releaseSemaphore, semSetup
-filled out the body for each 
+filled out the body for each
 
 ### 2024-01-08 - started semaphore integration
 I tried to add semaphores to the client logic, however, semaphores are still blocked even though others clients have freed
@@ -118,3 +118,16 @@ debugging select code for various clients to use at once (in progress)
 ### 2024-01-10 - select for multiple client
 connecting multiple clients to one server using select
 debugging select code for various clients to use at once (in progress)
+
+### 2024-01-11 - select for multiple client / implementing leaderboard
+started implementation of leaderboard to reflect changes in the score between multiple clients
+
+### 2024-01-13 - win/lose in client
+determined win/lose condition for multiple clients
+sent file containing detail back to winner client
+fixed Leaderboard
+
+### 2024-01-15 - new method for selection of modes
+allow for user to select between two modes
+changes to makefile to reflect new option
+added transcription to multiple clients
