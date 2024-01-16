@@ -36,9 +36,16 @@ The 2nd mode in our game is the multi player version of 20 questions. The boss (
 3. When the terminal displays ``Waiting for client to connect...``, the boss will enter the secert word, and other players (guessers) will connect by EACH running  `./clientexe 2`.
 4. The boss will see `Client connected!` for each user that connects
 5. The guesser will then be prompted to enter their name
-6. After that, they will begin asking the questions.
+6. After entering their name users should type their first question into the empty new line that follows
+7. The boss will then receive the question and will have the option to answer from (yes/no/ans)
+8. After receiving the first answer from the boss the guesser will then be prompted to "Ask a question:"
 6. The back-and-forth of questions and answers will continue until one guesser correctly identifies the mystery object OR when boss decides to end the game.
 
 # Bugs:
+- For multi player 20 question, when the user initially connects to a client, the first "Ask a question:" prompt will not show up. However, users are able to just enter their question into the empty line (which will then be sent to the server). All preceding questions will be prompted prior with the "Ask a question"
+- There is no implementation in place to check when the client # exceeds the MAX capacity (5). Running based on assumption that client will stop joining once there are 5 players.
+- When returning transcription files, there are sometimes random symbols at the end of the file
+
+
 
 **Good luck and have fun!!!**

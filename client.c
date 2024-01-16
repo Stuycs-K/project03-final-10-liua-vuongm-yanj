@@ -107,6 +107,8 @@ void clientLogicMultiple(struct player* c, char* ip){
         close(server_socket);
         server_socket = 0;
         printf("SERVER DISCONNECTED\n");
+        printf("GAME END");
+        exit(1);
       }
       if(bytes > 0){
         char* r = input;

@@ -6,10 +6,10 @@
 - Jiayu Yan
 
 # Intentions:
-2 Minutes - a guessing game where a player thinks of a secret object and the other players have to guess it, in under 2 minutes. The questions that can be asked must be yes or no questions. Players will be ranked based on the number of questions that they take to guess the object.
+20 Question (Single / Multi Player) - a guessing game where a player thinks of a secret object and the other players have to guess it, with the option of selecting whether they want their game to be single player or double player. The questions that can be asked must be yes or no questions. Players will be scored based on their ability to answer the question within 20 questions (single player) or before other competing players (multi player).
 
 # Intended usage:
-Multiple clients can connect to one main server, which will act as the player thinking of the word / secret object. The other clients will then be able to ask the server questions, which will then be answered with a yes or no (by the player using the server). The client will keep track of their individual number of guesses. Once the 2 minutes are up, the server will declare the game over and exit the program. A leaderboard will be made ranking each client. After each round the server will read the scores of the leaderboard file and eliminate the client ranked at the bottom until there is only 1 client left. At the end of each round, a transcript of the previous guesses and responses will be made and put into a file and then print out a copy to each client.
+Users have the option to choose between a single or multiple player game. If users choose a single player game, there will be back and forth communication between the server and client in which the player attempts to guess the word until 20 questions are up. If multiplayer version is selected Multiple clients can connect to one main server, which will act as the player thinking of the word / secret object. The other clients will then be able to ask the server questions, which will then be answered with a yes or no (by the player using the server). The client will keep track of their individual number of guesses. A leaderboard is made ranking each client based on their individual scores. After each question the server will read the scores of the leaderboard. At the end of a round, a transcript of the previous guesses and responses will be made and put into a file and sent to the winning client (multi player) or the sole client (single player).
 
 # Technical Details:
 ### topics covered in class
@@ -43,25 +43,25 @@ Andrew
 # Intended pacing:
 - 1/5 - establish communication between server and client
 - 1/8:
-    - Jiayu: 
+    - Jiayu:
         - Client keeps track of their score
-        - Updating the leaderboard with Client Score 
-    - Andrew: 
+        - Updating the leaderboard with Client Score
+    - Andrew:
         - work on semaphores to only allow one question to be sent to server at a time
         - limit semaphores to one client, test with two to see if block
-    - Carmin: 
-        - storing client's guesses in memory 
+    - Carmin:
+        - storing client's guesses in memory
         - work on transcribing the client's guesses + response back into a file
 - 1/9:
     - Jiayu:
-        - Reading the leaderboard / elimiating the last client
+        - Reading the leaderboard
     - Andrew:
         - continue working on semaphore implementation
     - Carmin:
         - continue working on transcribing guesses + response back into files
 - 1/10:
     - Jiayu:
-        - continue working on reading from leaderboard / eliminating the last client
+        - continue working on reading from leaderboard
     - Andrew:
         - finish semaphore implementation
     - Carmin:
@@ -75,8 +75,8 @@ Andrew
         - work on each client receiving transcript after a win
 - 1/12:
     - Jiayu:
-        - figure out how to signal the end of a game 
-        - block eliminated client from continuing to the next round 
+        - figure out how to signal the end of a game
+        - block eliminated client from continuing to the next round
     - Andrew:
         - add semaphores to prevent a client from connecting if the game is already is progress    
     - Carmin:
