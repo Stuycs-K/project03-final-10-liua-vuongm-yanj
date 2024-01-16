@@ -22,7 +22,7 @@ void printTranscript(char* file) {
   if (t_file == -1) perror("reading file error\n");
 
   int bytes;
-  bytes = read(t_file, buff, BUFFER_SIZE*2);
+  bytes = read(t_file, buff, BUFFER_SIZE);
   // printf("bytes: %d\n", bytes);
   if(bytes == -1) {perror("reading bytes error");}//all non 0 are true
 
