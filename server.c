@@ -65,7 +65,7 @@ int serverLogicMultiple(){
   int listen_socket, client_socket, current;
   current = 0;
   //assume this functuion correcly sets up a listening socket
-
+  printf(White "Waiting for a client to connect...\n");
   listen_socket = server_setup();
 
   char userInput[100];
@@ -106,6 +106,7 @@ int serverLogicMultiple(){
     //assume this function works correctly
     if (FD_ISSET(listen_socket, &read_fds)) {
       client_socket = server_tcp_handshake(listen_socket);
+      printf(Green "A Client connected!\n\n");
       if(client_socket <= 0){
         err(client_socket, "error accepting client");
       }
@@ -127,7 +128,7 @@ int serverLogicMultiple(){
         //printf("%s\n", leaderboard[i] -> name);
         if (p > 0) {
           leaderboard[i] = now;
-          displayL(leaderboard);
+          //displayL(leaderboard);
           printf("Question Recieved (from client): %s \n", now->question);
           printf("Answer with yes/no \n");
           fgets(input, sizeof(input), stdin);
@@ -136,7 +137,7 @@ int serverLogicMultiple(){
           if(strcasecmp(input, "yes") == 0){
               leaderboard[i] -> score ++;
           }
-          displayL(leaderboard);
+        //  displayL(leaderboard);
         }
         else if(p == 0){
           close(sockets[i]);
@@ -162,14 +163,16 @@ void questionsLogic(){
   // current = 0;
   // //assume this functuion correcly sets up a listening socket
 
-  // listen_socket = server_setup();
+  printf(White "Waiting for client to connect...\n");
   int listen_socket = server_setup();
   int client_socket = server_tcp_handshake(listen_socket);
+  printf(Green "Client connected!\n\n");
+
   char userInput[100];
   printf(Blue "Set your word: \n");
   printf(Clear ">> ");
   fgets(userInput, sizeof(userInput), stdin);
-  
+
   char buff[BUFFER_SIZE];
   int winBoolean = 0;
   while(1){
@@ -190,7 +193,7 @@ void questionsLogic(){
       }
     }
     else{ // if no bytes are read
-      break; 
+      break;
     }
   }
   if(winBoolean){
@@ -204,45 +207,16 @@ void questionsLogic(){
 
 int main(int argc, char *argv[] ) {
 
-  // setting the game mode
-  char modeStdIn[100];
-  int modeBoolean20Game = 0; // default is 2 minutes, boolean is false
-  printf(White "Enter 1 for 20 Questions (one player) or 2 for 2 minutes (multi player)\n>> ");
-  fgets(modeStdIn, sizeof(modeStdIn), stdin);
-  int result = strcmp(modeStdIn,"1"); // not sure why it returns 10 if equal
-  if(result == 10){ // if user input is 1
-    modeBoolean20Game = 1; // boolean set to true
-    printf(Magenta "20 Questions Mode!\n" Clear);
-  }
-  else{
-    printf( Magenta "2 Minutes Mode!\n");
-  }
-
-  
-  // communicate game mode to client
-
-  printf(Black "Waiting for client to connect...\n");  
-  int listen_socket = server_setup();
-  int client_socket = server_tcp_handshake(listen_socket);
-  printf(Green "Client connected!\n\n");
-  write(client_socket, &modeBoolean20Game, sizeof(modeBoolean20Game));
-  close(listen_socket);
-  close(client_socket);
-
-  if(modeBoolean20Game){
+  if(strcmp(argv[1],"1") == 0){
     // code for 20 questions
     // setting the word
-    
+    printf(Magenta "20 Questions Mode!\n" Clear);
     questionsLogic();
-
   }
-  else{
+  if(strcmp(argv[1],"2") == 0){
     // code for 2 minutes
+    printf(Magenta "2 min Mode!\n" Clear);
     serverLogicMultiple();
   }
 
 }
-
-// int main(int argc, char *argv[] ) {
-//   serverLogicMultiple();
-// }

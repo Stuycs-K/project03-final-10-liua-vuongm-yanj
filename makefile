@@ -19,10 +19,10 @@ semaphore.o: semaphore.c semaphore.h
 	@gcc -c semaphore.c
 
 client: clientexe
-	@./clientexe
+	@./clientexe $(MODE)
 
 server: serverexe
-	@./serverexe
+	@./serverexe $(MODE)
 
 clean:
 	@rm -f *.o

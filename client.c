@@ -30,7 +30,7 @@ void printTranscript(char* file) {
 
   close(t_file);
   // }
-} 
+}
 
 
 static void sighandler(int signo){
@@ -66,7 +66,7 @@ void clientLogicMultiple(struct player* c, char* ip){
   int server_socket = client_tcp_handshake(ip);
   int loop = 0;
 
-  printf("Ask a Question: \n");
+  printf("Ask a Question: ");
 
   while(1){
     FD_ZERO(&read_fds);
@@ -86,7 +86,7 @@ void clientLogicMultiple(struct player* c, char* ip){
     //  printf("got user question\n");
       strcpy(c->question, input);
       int stuff = write(server_socket, c, sizeof(struct player));
-      display(c);
+      //display(c);
       if(stuff < 0){
         err(stuff, "try to write to server");
       }
@@ -141,7 +141,7 @@ void questionsLogic(int server_socket, struct player* current){
 
     // writing stdin to server
     fgets(buff,sizeof(buff),stdin);
-    write(server_socket, buff, sizeof(buff)); // writing question to 
+    write(server_socket, buff, sizeof(buff)); // writing question to
     questions --;
 
     // writing the stdin question to transcription file
@@ -157,11 +157,11 @@ void questionsLogic(int server_socket, struct player* current){
     write(t_file, "ANSWER: ", strlen("ANSWER: "));
     write(t_file, r, strlen(r)); // put into file
     write(t_file, "\n\n", strlen("\n\n")); // formatting
-    
+
     // checking if won
     int result = strcmp(buff,"ans"); // checking if received win
     if(result == 10){ // server said we guessed the answer!
-      winBoolean = 1;    
+      winBoolean = 1;
       break;
     }
     printf(Blue "answer: \n");
@@ -170,7 +170,7 @@ void questionsLogic(int server_socket, struct player* current){
       break;
     }
   }
-  
+
    // break becasue of win
   if(winBoolean){
     printf(Green "You guessed the mystery word!\n");
@@ -200,23 +200,23 @@ void questionsLogic(int server_socket, struct player* current){
 
 int main(int argc, char *argv[] ) {
   char* IP = "127.0.0.1";
-  if(argc>1){
-    IP=argv[1];
-  }
-  int server_socket = client_tcp_handshake(IP);
-  printf(Black "Connected Server at IP: %s\n\n", IP);
-
-
-  // receiving the game mode from server
-  int buffer[BUFFER_SIZE];
-  // printf("AIODUHIOAUSDOIASHIDAOS\n");
-  read(server_socket, buffer, sizeof(buffer)); // reading mode
-  // printf("I WANNA KISmS\n");
-  close(server_socket);
-  int modeBoolean20Game = 0; // default to 2 minutes
-  if(*buffer == 1){
-    modeBoolean20Game = 1; // set to 20 questions
-  }
+  // if(argc>1){
+  //   IP=argv[1];
+  // }
+  // int server_socket = client_tcp_handshake(IP);
+  // printf(Black "Connected Server at IP: %s\n\n", IP);
+  //
+  //
+  // // receiving the game mode from server
+  // int buffer[BUFFER_SIZE];
+  // // printf("AIODUHIOAUSDOIASHIDAOS\n");
+  // read(server_socket, buffer, sizeof(buffer)); // reading mode
+  // // printf("I WANNA KISmS\n");
+  // close(server_socket);
+  //int modeBoolean20Game = 1; // default to 2 minutes
+  // if(*buffer == 1){
+  //   modeBoolean20Game = 1; // set to 20 questions
+  // }
 
 
   // setup name and score
@@ -224,8 +224,7 @@ int main(int argc, char *argv[] ) {
   // printf("mode boolean: %d\n", modeBoolean20Game);
 
 
-
-  if(modeBoolean20Game){
+if(strcmp(argv[1],"1") == 0){
     char name[35];
     int score = 0;
     printf(Blue "Enter your name: \n");
@@ -243,7 +242,7 @@ int main(int argc, char *argv[] ) {
     questionsLogic(server_socket,c);
 
   }
-  else{
+  if(strcmp(argv[1],"2") == 0){
 
     char name[35];
     int score = 0;
@@ -260,7 +259,7 @@ int main(int argc, char *argv[] ) {
 
     clientLogicMultiple(c, IP);
   }
-  
-  
+
+
 
 }
