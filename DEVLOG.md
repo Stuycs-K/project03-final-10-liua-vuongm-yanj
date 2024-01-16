@@ -93,6 +93,7 @@ format code a bit better and document a little better
 ### 2024-01-15 add transcription for signals + prettify
 - print transcription if client disconnects using signals
 - reformat the terminal prompts and add color to make more aesthetically pleasing
+- reword README.md + edit makefile
 
 ## Jiayu Yan
 

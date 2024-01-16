@@ -10,8 +10,8 @@
 
 Our project is a mystery word guesser game. We have two modes. 
 
-## "20 questions" - Single Player Mode 
-One single player mode which we call "20 questions." There is one server who is called "answerer" who thinks of an object for the "questioner," the client, to guess. The questioner can ask up to 20 yes-or-no questions to determine what object the answer is thinking about. If the questioner is able to guess the mystery object in 20 questions or less, they win. Otherwise, the answerer wins.
+## "20 questions" - Single Player Mode (1 guesser)
+One of the modes is single-player which we call "20 questions." There is one server who is called the "answerer" who thinks of an object for the "guesser," the client, to guess. The guesser can ask up to 20 yes-or-no questions to determine what object the answerer is thinking about. If the questioner is able to guess the mystery object in 20 questions or less, they win. Otherwise, they lose.
 
 ## "2 minutes" - Multi Player Mode
   
@@ -19,7 +19,14 @@ One single player mode which we call "20 questions." There is one server who is 
 
 ## "20 questions"
 
-Answerer run ./server and enter 1 into stdin to select the game mode 20 Questions. When it displays "Waiting for client to connect," tell the questioner to connect. The questioner will run ./client and after making a successful connection, the answerer will have "Client connected!" displayed in their terminal and be asked to set their word. The questioner will be asked to enter their name and be prompted to ask their first question. The number of questions left will be displayed in the questioner's terminal and when they ask a question, the answerer can respond with "yes," "no," or "ans" to signify that the questioner has correctly guessed the mystery object! Once the game is over, whether because the answerer has ran out of questions or guessed the mystery object, a transcript of the game will be printed in the questioner's terminal. It will also be stored in a txt file named "transcript_(Name).txt" where name is the stdin you provided when the answerer was prompted to enter their name. **Good luck and have fun!!!**
+1. One person will run `make compile`
+2. The answerer will run `make server` or `./serverexe` and input `1` into the terminal prompt to play this mode
+3. When the terminal displays ``Waiting for client to connect...``, the guesser will connect by running either `make client` or `./clientexe`.
+4. The answerer will see `Client connected!` and be prompted to enter their secret word.
+5. The guesser will be prompted to enter their name. After that, they will begin asking the questions.
+6. The back-and-forth of questions and answers will continue until the guesser correctly identifies the mystery object, where the answerer will type in `ans`, OR the guesser runs out of attempts.
+
+**Good luck and have fun!!!**
 
 ## "2 minutes"
 
